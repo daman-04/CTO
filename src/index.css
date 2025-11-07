@@ -1,8 +1,56 @@
 @import "tailwindcss";
 
 @theme {
+  /* Font families */
   --font-sans: 'SF Pro Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+  
+  /* Tahoe color palette - neutral grayscale with desaturated blue/graphite accents */
+  --color-tahoe-50: rgb(248 250 252);
+  --color-tahoe-100: rgb(241 245 249);
+  --color-tahoe-200: rgb(226 232 240);
+  --color-tahoe-300: rgb(203 213 225);
+  --color-tahoe-400: rgb(148 163 184);
+  --color-tahoe-500: rgb(100 116 139);
+  --color-tahoe-600: rgb(71 85 105);
+  --color-tahoe-700: rgb(51 65 85);
+  --color-tahoe-800: rgb(30 41 59);
+  --color-tahoe-900: rgb(15 23 42);
+  
+  /* Desaturated blue/graphite accents */
+  --color-accent-50: rgb(236 242 248);
+  --color-accent-100: rgb(207 219 235);
+  --color-accent-200: rgb(165 186 215);
+  --color-accent-300: rgb(118 145 180);
+  --color-accent-400: rgb(71 100 139);
+  --color-accent-500: rgb(47 80 122);
+  --color-accent-600: rgb(29 62 105);
+  --color-accent-700: rgb(20 49 87);
+  --color-accent-800: rgb(15 36 64);
+  --color-accent-900: rgb(10 25 46);
+  
+  /* 16px spacing scale */
+  --spacing-scale: 16px;
+  
+  /* Custom radii - 12px base */
+  --radius-tahoe: 12px;
+  --radius-tahoe-sm: 8px;
+  --radius-tahoe-lg: 16px;
+  --radius-tahoe-xl: 24px;
+  
+  /* Elevation layers */
+  --elevation-base: 0;
+  --elevation-surface: 1;
+  --elevation-overlay: 2;
+  
+  /* Translucency levels */
+  --glass-opacity-subtle: 0.3;
+  --glass-opacity-light: 0.5;
+  --glass-opacity-medium: 0.7;
+  --glass-opacity-strong: 0.9;
+  
+  /* Backdrop blur utilities */
+  --blur-tahoe: blur(12px);
 }
 
 /* SF Pro Text and SF Mono font declarations */
@@ -57,7 +105,7 @@
 /* Base reset and macOS Tahoe aesthetic foundation */
 @layer base {
   * {
-    border-color: rgb(229 231 235);
+    border-color: rgb(226 232 240);
   }
 
   html {
@@ -66,9 +114,16 @@
   }
 
   body {
-    background: linear-gradient(to bottom right, rgb(248 250 252), rgb(249 250 251), rgb(239 246 255));
+    /* macOS Tahoe gradient background */
+    background: linear-gradient(
+      to bottom right,
+      rgb(248 250 252),
+      rgb(241 245 249),
+      rgb(236 242 248)
+    );
     color: rgb(17 24 39);
     font-family: var(--font-sans);
+    font-feature-settings: 'kern' 1, 'liga' 1;
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -77,4 +132,37 @@
   #root {
     min-height: 100vh;
   }
+}
+
+/* Tahoe glass utilities */
+@layer utilities {
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .glass-light {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .glass-medium {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  /* Tahoe radius utilities */
+  .rounded-tahoe { border-radius: 12px; }
+  .rounded-tahoe-sm { border-radius: 8px; }
+  .rounded-tahoe-lg { border-radius: 16px; }
+  .rounded-tahoe-xl { border-radius: 24px; }
 }

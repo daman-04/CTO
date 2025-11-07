@@ -1,41 +1,49 @@
-# Vite + React + TypeScript + TailwindCSS
+# Tahoe Theme System
 
-A modern React application built with Vite, TypeScript, and TailwindCSS, featuring a macOS Tahoe-inspired aesthetic.
+A comprehensive macOS Tahoe-inspired design system built with React, TypeScript, TailwindCSS v4, and Framer Motion.
 
 ## Tech Stack
 
 - **Build Tool**: Vite 7.x
 - **Framework**: React 19
 - **Language**: TypeScript 5.x
-- **Styling**: TailwindCSS v4 with JIT mode
-- **Animation**: Framer Motion
+- **Styling**: TailwindCSS v4 with custom Tahoe configuration
+- **Animation**: Framer Motion with spring-based motion system
 - **State Management**: Zustand
 - **Routing**: React Router DOM v7
 - **Utilities**: classnames
 
 ## Features
 
-- ⚡️ Lightning-fast development with Vite HMR
-- 🎨 TailwindCSS with custom macOS Tahoe aesthetic
-- 🎭 Smooth animations with Framer Motion
-- 📦 Lightweight state management with Zustand
-- 🔤 SF Pro Text and SF Mono fonts (weights 300-500)
-- 📱 Responsive design out of the box
-- 🎯 TypeScript for type safety
-- 🏗️ Organized project structure
+- 🎨 **Complete Design System**: Color tokens, spacing scale, typography system
+- 🪟 **Glass-morphism Effects**: Translucent panels with backdrop blur
+- 🎭 **Motion System**: Spring-based animations (180-250ms timing)
+- 🔤 **SF Pro Typography**: Complete hierarchy with proper font loading
+- 📦 **UI Components**: GlassPanel, GlassButton, Typography, IconBadge
+- 📱 **Responsive Design**: Mobile-first with proper breakpoints
+- 🎯 **TypeScript Support**: Full type safety across all components
+- 📚 **Comprehensive Docs**: Usage guidelines and API documentation
 
 ## Project Structure
 
 ```
 src/
-├── components/     # Reusable UI components
-├── modules/        # Feature modules and pages
-├── state/          # Zustand stores for global state
+├── components/     # Tahoe UI components
+│   ├── GlassPanel.tsx      # Translucent container
+│   ├── GlassButton.tsx     # Interactive button
+│   ├── Typography.tsx      # Typography system
+│   ├── IconBadge.tsx       # Status badges
+│   └── index.ts            # Component exports
+├── lib/
+│   └── motion.ts           # Motion configuration
+├── modules/
+│   └── TahoeThemeDemo.tsx  # Demo page
+├── state/          # Zustand stores
 ├── hooks/          # Custom React hooks
-├── assets/         # Static assets (fonts, images, etc.)
-├── App.tsx         # Main application component
-├── main.tsx        # Application entry point
-└── index.css       # Global styles and Tailwind directives
+├── assets/         # Static assets
+├── App.tsx         # Main application
+├── main.tsx        # Entry point
+└── index.css       # Global styles & Tailwind config
 ```
 
 ## Getting Started
@@ -131,15 +139,60 @@ Font families are configured using CSS variables in the `@theme` block:
 - `postcss` - CSS transformations
 - `autoprefixer` - Vendor prefix automation
 
-## Design Philosophy
+## Tahoe Theme Components
 
-This project follows a macOS Tahoe aesthetic with:
-- Soft, neutral backgrounds with subtle gradients
-- Glass-morphism effects (backdrop blur)
-- Subtle shadows and borders
-- Clean typography with SF fonts
-- Smooth animations and transitions
-- Modern, minimal UI components
+### GlassPanel
+Translucent container with glass-morphism effects:
+```tsx
+<GlassPanel variant="medium" elevation="surface" rounded="md">
+  Content here
+</GlassPanel>
+```
+
+### GlassButton
+Interactive button with glass effects:
+```tsx
+<GlassButton variant="primary" size="md" onClick={handleClick}>
+  Click me
+</GlassButton>
+```
+
+### Typography
+Complete typography system:
+```tsx
+<Typography variant="h1" weight="light" color="primary">
+  Title
+</Typography>
+```
+
+### IconBadge
+Status indicator badges:
+```tsx
+<IconBadge variant="accent" size="md">
+  ★
+</IconBadge>
+```
+
+## Motion System
+
+Spring-based animations with 180-250ms timing:
+```tsx
+import { tahoeVariants, tahoeTransitions } from './lib/motion'
+
+<motion.div
+  variants={tahoeVariants.slideUp}
+  transition={tahoeTransitions.slideUp}
+>
+  Animated content
+</motion.div>
+```
+
+## Design Tokens
+
+- **Colors**: Neutral grayscale (tahoe-50 to tahoe-900) + desaturated blue accents
+- **Spacing**: 16px base scale
+- **Radii**: 8px, 12px (default), 16px, 24px
+- **Glass Effects**: 4 translucency levels with 12px backdrop blur
 
 ## Scripts
 
@@ -147,13 +200,10 @@ This project follows a macOS Tahoe aesthetic with:
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 
-## Next Steps
+## Documentation
 
-1. Add routing with React Router DOM
-2. Create reusable component library
-3. Set up Zustand stores for state management
-4. Build out feature modules
-5. Add custom hooks as needed
+- 📖 **[TAHOE_THEME.md](./TAHOE_THEME.md)** - Complete design system documentation
+- 📋 **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - Implementation details
 
 ## License
 
