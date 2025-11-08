@@ -105,7 +105,7 @@ export function Students() {
             layout
             variant="light"
             elevation="surface"
-            className="p-4 space-y-4 xl:col-span-2"
+            className="p-4 space-y-4 xl:col-span-2 liquid-morph"
           >
             <div className="flex items-center justify-between">
               <Typography
@@ -143,24 +143,24 @@ export function Students() {
                         />
                       )}
                       <div className="relative z-10 flex items-center gap-3 px-4 py-3">
-                        <div
-                          className={classNames(
-                            'w-10 h-10 rounded-full bg-gradient-to-br flex items-center justify-center border border-white/50 shadow-sm text-sm font-mono text-gray-700',
-                            student.avatarGradient
-                          )}
-                        >
-                          {student.initials}
+                      <div
+                        className={classNames(
+                          'w-10 h-10 rounded-full bg-gradient-to-br flex items-center justify-center border border-white/50 shadow-sm text-sm font-mono text-gray-700 flex-shrink-0',
+                          student.avatarGradient
+                        )}
+                      >
+                        {student.initials}
+                      </div>
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="text-sm font-medium text-gray-900 truncate" title={student.name}>
+                          {student.name}
+                        </p>
+                        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono uppercase tracking-wide text-gray-500">
+                          <span>{student.year}</span>
+                          <span className="opacity-40">•</span>
+                          <span className="truncate" title={student.major}>{student.major}</span>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {student.name}
-                          </p>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono uppercase tracking-wide text-gray-500">
-                            <span>{student.year}</span>
-                            <span className="opacity-40">•</span>
-                            <span className="truncate">{student.major}</span>
-                          </div>
-                        </div>
+                      </div>
                         <div className="text-right">
                           <p className="text-xs font-mono uppercase tracking-wide text-gray-500">
                             GPA
@@ -193,7 +193,7 @@ export function Students() {
                   layout
                   variant="medium"
                   elevation="overlay"
-                  className="relative overflow-hidden p-6 md:p-8"
+                  className="relative overflow-hidden p-6 md:p-8 lg:p-10 liquid-float"
                 >
                   <div className="flex flex-wrap gap-4 md:absolute md:-top-12 md:right-6 md:justify-end md:pointer-events-none">
                     {quickStats.map((stat, index) => (
@@ -211,7 +211,7 @@ export function Students() {
                           variant="strong"
                           elevation="overlay"
                           rounded="sm"
-                          className="px-4 py-3 min-w-[140px]"
+                          className="px-4 py-3 min-w-[140px] liquid-hover"
                         >
                           <p className="text-xs font-mono uppercase tracking-[0.28em] text-gray-500">
                             {stat.label}

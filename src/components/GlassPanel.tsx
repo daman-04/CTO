@@ -23,8 +23,9 @@ export function GlassPanel({
 }: GlassPanelProps) {
   const glassClasses = classNames(
     'glass-' + variant,
+    'liquid-hover liquid-glow',
     {
-      'border border-gray-200/50': border,
+      'border-0': !border,
     },
     {
       'rounded-tahoe-sm': rounded === 'sm',
@@ -40,6 +41,11 @@ export function GlassPanel({
       variants={tahoeVariants.glassReveal}
       transition={tahoeTransitions.fadeIn}
       className={glassClasses}
+      whileHover={{ 
+        y: -4,
+        scale: 1.005,
+        transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+      }}
       {...motionProps}
     >
       {children}

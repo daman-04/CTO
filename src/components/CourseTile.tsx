@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { CourseData } from '../state/appStore'
 import { GlassPanel, Typography } from './index'
 import classNames from 'classnames'
+import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 interface CourseTileProps {
   course: CourseData
