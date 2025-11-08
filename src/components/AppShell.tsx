@@ -114,13 +114,16 @@ export function AppShell() {
                   }}
                 >
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    variants={tahoeVariants.buttonPress}
+                    initial="rest"
+                    whileHover="hover"
+                    whileTap="tap"
+                    whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                     className={classNames(
-                      'flex items-center gap-3 px-4 py-3 rounded-tahoe-sm transition-all',
+                      'flex items-center gap-3 px-4 py-3 rounded-tahoe-sm',
                       isActive
-                        ? 'glass-strong text-blue-600 shadow-sm'
-                        : 'hover:glass-light text-gray-700'
+                        ? 'glass-strong text-blue-600'
+                        : 'text-gray-700'
                     )}
                   >
                     <span className="text-xl">{item.icon}</span>
@@ -171,14 +174,17 @@ export function AppShell() {
 
               {/* Notifications Button */}
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                variants={tahoeVariants.buttonPress}
+                initial="rest"
+                whileHover="hover"
+                whileTap="tap"
+                whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                 onClick={toggleNotificationDrawer}
                 className={classNames(
-                  'relative p-2 rounded-tahoe-sm transition-all',
+                  'relative p-2 rounded-tahoe-sm',
                   isNotificationDrawerOpen
                     ? 'glass-strong text-blue-600'
-                    : 'hover:glass-light text-gray-700'
+                    : 'text-gray-700'
                 )}
               >
                 <span className="text-xl">◐</span>
@@ -198,8 +204,11 @@ export function AppShell() {
 
               {/* User Avatar */}
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                variants={tahoeVariants.buttonPress}
+                initial="rest"
+                whileHover="hover"
+                whileTap="tap"
+                whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                 className="w-10 h-10 rounded-full glass-medium border border-gray-200/50 flex items-center justify-center cursor-pointer"
               >
                 <Typography variant="body" weight="medium" className="text-sm">
@@ -258,19 +267,23 @@ export function AppShell() {
                     <motion.button
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      variants={tahoeVariants.buttonPress}
+                      whileHover="hover"
+                      whileTap="tap"
+                      whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                       onClick={markAllNotificationsAsRead}
-                      className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                      className="text-xs text-blue-600 font-medium"
                     >
                       Mark all read
                     </motion.button>
                   )}
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                    variants={tahoeVariants.buttonPress}
+                    whileHover="hover"
+                    whileTap="tap"
+                    whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                     onClick={toggleNotificationDrawer}
-                    className="text-gray-600 hover:text-gray-800"
+                    className="text-gray-600"
                   >
                     ✕
                   </motion.button>

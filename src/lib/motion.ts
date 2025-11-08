@@ -15,13 +15,14 @@ export const TAHOE_MOTION = {
   },
 } as const
 
-// Shared spring transitions
+// Shared spring transitions (no bounce, frictionless springs)
 export const tahoeTransitions: Record<string, Transition> = {
   fadeIn: TAHOE_MOTION.SPRING.GENTLE,
   slideUp: TAHOE_MOTION.SPRING.SMOOTH,
   slideDown: TAHOE_MOTION.SPRING.SMOOTH,
   scaleIn: TAHOE_MOTION.SPRING.SNAPPY,
-  bounce: TAHOE_MOTION.SPRING.BOUNCY,
+  hover: { type: 'spring', stiffness: 350, damping: 40 },
+  tap: { type: 'spring', stiffness: 450, damping: 45 },
 }
 
 // Common animation variants
@@ -65,11 +66,11 @@ export const tahoeVariants: Record<string, Variants> = {
     exit: { opacity: 0, scale: 0.95 },
   },
   
-  // Button interactions
+  // Button interactions (subtle, frictionless)
   buttonPress: {
     rest: { scale: 1 },
-    hover: { scale: 1.02 },
-    tap: { scale: 0.98 },
+    hover: { scale: 1.01 },
+    tap: { scale: 0.99 },
   },
   
   // Glass panel reveal
@@ -77,13 +78,13 @@ export const tahoeVariants: Record<string, Variants> = {
     initial: { opacity: 0, backdropFilter: 'blur(0px)' },
     animate: { 
       opacity: 1, 
-      backdropFilter: 'blur(12px)',
-      transition: { duration: 0.3 }
+      backdropFilter: 'blur(8px)',
+      transition: TAHOE_MOTION.SPRING.SMOOTH
     },
     exit: { 
       opacity: 0, 
       backdropFilter: 'blur(0px)',
-      transition: { duration: 0.2 }
+      transition: TAHOE_MOTION.SPRING.GENTLE
     },
   },
   
@@ -102,6 +103,43 @@ export const tahoeVariants: Record<string, Variants> = {
   staggerItem: {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
+  },
+  
+  // Interactive hover states with subtle light accents
+  interactiveHover: {
+    rest: { 
+      backgroundColor: 'transparent',
+      transition: tahoeTransitions.hover
+    },
+    hover: { 
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      transition: tahoeTransitions.hover
+    },
+  },
+  
+  // Focus states with accessibility cues
+  interactiveFocus: {
+    rest: { 
+      outline: 'none',
+      boxShadow: 'none',
+    },
+    focus: { 
+      outline: 'none',
+      boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.3)',
+      transition: tahoeTransitions.hover
+    },
+  },
+  
+  // Card hover with elevation
+  cardHover: {
+    rest: { 
+      y: 0,
+      transition: tahoeTransitions.hover
+    },
+    hover: { 
+      y: -4,
+      transition: tahoeTransitions.hover
+    },
   },
 }
 

@@ -31,22 +31,22 @@ export function CourseTile({ course, index }: CourseTileProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={tahoeVariants.slideUp}
       transition={{ 
-        duration: 0.3, 
-        delay: index * 0.05,
-        layout: { duration: 0.2 }
+        ...tahoeTransitions.slideUp,
+        delay: index * 0.05
       }}
       layout
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileHover={{ y: -4, transition: tahoeTransitions.hover }}
       className="h-full"
     >
       <GlassPanel 
         variant="medium" 
         elevation="surface"
-        className="p-6 h-full hover:shadow-lg transition-all duration-200 cursor-pointer group"
+        className="p-6 h-full cursor-pointer group"
       >
         {/* Header with Code and Status */}
         <div className="flex items-start justify-between mb-4">
@@ -64,7 +64,7 @@ export function CourseTile({ course, index }: CourseTileProps) {
                 {course.status}
               </span>
             </div>
-            <Typography variant="h4" className="font-medium text-gray-800 group-hover:text-blue-600 transition-colors">
+            <Typography variant="h4" className="font-medium text-gray-800 group-hover:text-blue-600">
               {course.name}
             </Typography>
           </div>
@@ -121,7 +121,7 @@ export function CourseTile({ course, index }: CourseTileProps) {
                 className={classNames('h-full rounded-full', getProgressColor(course.progress))}
                 initial={{ width: 0 }}
                 animate={{ width: `${course.progress}%` }}
-                transition={{ duration: 0.8, delay: 0.2 + index * 0.05 }}
+                transition={{ ...tahoeTransitions.slideUp, delay: 0.2 + index * 0.05 }}
               />
             </div>
           </div>

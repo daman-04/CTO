@@ -25,12 +25,11 @@ export function GPATile({ data, index = 0 }: GPATileProps) {
   return (
     <motion.div
       variants={tahoeVariants.slideUp}
-      transition={tahoeTransitions.slideUp}
-      custom={index}
-      whileHover={{ y: -4 }}
-      className="hover:shadow-lg transition-shadow duration-200"
+      transition={{ ...tahoeTransitions.slideUp, delay: index * 0.1 }}
+      whileHover={{ y: -4, transition: tahoeTransitions.hover }}
+      className=""
     >
-      <GlassPanel className="p-6 cursor-default group hover:bg-gray-300/20 transition-colors duration-200">
+      <GlassPanel className="p-6 cursor-default group">
         <div className="flex items-start justify-between mb-4">
           <div>
             <Typography variant="overline" weight="medium" color="secondary">
@@ -59,7 +58,7 @@ export function GPATile({ data, index = 0 }: GPATileProps) {
               className="h-full rounded-tahoe bg-gradient-to-r from-blue-400 to-blue-600"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 0.8, delay: index * 0.1 + 0.2 }}
+              transition={{ ...tahoeTransitions.slideUp, delay: index * 0.1 + 0.2 }}
             />
           </div>
         </div>
