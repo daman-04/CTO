@@ -197,4 +197,47 @@
   .rounded-tahoe-sm { border-radius: 8px; }
   .rounded-tahoe-lg { border-radius: 16px; }
   .rounded-tahoe-xl { border-radius: 24px; }
+  
+  /* macOS-style custom scrollbars */
+  .scrollbar-tahoe {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(203, 213, 225, 0.5) transparent;
+  }
+  
+  .scrollbar-tahoe::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-tahoe::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-tahoe::-webkit-scrollbar-thumb {
+    background: rgba(203, 213, 225, 0.5);
+    border-radius: 3px;
+  }
+  
+  .scrollbar-tahoe::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.7);
+  }
+  
+  .dark .scrollbar-tahoe {
+    scrollbar-color: rgba(71, 85, 105, 0.5) transparent;
+  }
+  
+  .dark .scrollbar-tahoe::-webkit-scrollbar-thumb {
+    background: rgba(71, 85, 105, 0.5);
+  }
+  
+  .dark .scrollbar-tahoe::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.7);
+  }
+  
+  /* Text truncation utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

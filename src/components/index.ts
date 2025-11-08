@@ -4,6 +4,7 @@ export { GlassButton } from './GlassButton'
 export { Typography } from './Typography'
 export { IconBadge } from './IconBadge'
 export { AppShell } from './AppShell'
+export { NotificationItem } from './NotificationItem'
 
 // Dashboard Tiles
 export { GPATile } from './GPATile'
