@@ -6,9 +6,11 @@ import { AnnouncementData } from '../state/appStore'
 interface AnnouncementsTileProps {
   data: AnnouncementData[]
   index?: number
+  elevation?: '1' | '2' | '3'
+  interactive?: boolean
 }
 
-export function AnnouncementsTile({ data, index = 0 }: AnnouncementsTileProps) {
+export function AnnouncementsTile({ data, index = 0, elevation = '1', interactive = false }: AnnouncementsTileProps) {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'academic':
@@ -23,14 +25,12 @@ export function AnnouncementsTile({ data, index = 0 }: AnnouncementsTileProps) {
   }
 
   return (
-    <motion.div
-      variants={tahoeVariants.slideUp}
-      transition={tahoeTransitions.slideUp}
-      custom={index}
-      whileHover={{ y: -4 }}
-      className="hover:shadow-lg transition-shadow duration-200"
-    >
-      <GlassPanel className="p-6 cursor-default group hover:bg-gray-300/20 transition-colors duration-200">
+    <motion.div variants={tahoeVariants.tileStagger}>
+      <GlassPanel 
+        elevation={elevation} 
+        interactive={interactive}
+        className="p-6 cursor-default group"
+      >
         <div className="flex items-start justify-between mb-4">
           <div>
             <Typography variant="overline" weight="medium" color="secondary">
@@ -40,7 +40,7 @@ export function AnnouncementsTile({ data, index = 0 }: AnnouncementsTileProps) {
               {data.length}
             </Typography>
           </div>
-          <IconBadge variant="accent" size="lg">
+          <IconBadge variant="accent" size="lg" pulseOnMount>
             📢
           </IconBadge>
         </div>

@@ -1,30 +1,34 @@
 import React from 'react'
 import { motion, MotionProps } from 'framer-motion'
 import classNames from 'classnames'
-import { tahoeVariants, tahoeTransitions } from '../lib/motion'
+import { tahoeVariants, tahoeTransitions, tahoeMotion } from '../lib/motion'
 
 interface GlassPanelProps extends MotionProps {
   children: React.ReactNode
   variant?: 'subtle' | 'light' | 'medium' | 'strong'
-  elevation?: 'base' | 'surface' | 'overlay'
+  elevation?: '1' | '2' | '3'
   rounded?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
   border?: boolean
+  interactive?: boolean
 }
 
 export function GlassPanel({
   children,
   variant = 'medium',
-  elevation = 'surface',
+  elevation = '2',
   rounded = 'md',
   className,
   border = true,
+  interactive = false,
   ...motionProps
 }: GlassPanelProps) {
   const glassClasses = classNames(
     'glass-' + variant,
-    'liquid-hover liquid-glow',
+    `elevation-${elevation}`,
     {
+      'liquid-hover liquid-glow': interactive,
+      'glass-edge': elevation === '3',
       'border-0': !border,
     },
     {
@@ -36,16 +40,21 @@ export function GlassPanel({
     className
   )
 
+  const motionVariants = interactive 
+    ? tahoeVariants.hoverLift 
+    : tahoeVariants.panelEnter
+
+  const hoverProps = interactive ? {
+    whileHover: motionVariants.hover,
+    whileTap: { scale: 0.99, transition: tahoeMotion.SPRING.GENTLE },
+  } : {}
+
   return (
     <motion.div
-      variants={tahoeVariants.glassReveal}
-      transition={tahoeTransitions.fadeIn}
+      variants={motionVariants}
+      transition={tahoeMotion.SPRING.SMOOTH}
       className={glassClasses}
-      whileHover={{ 
-        y: -4,
-        scale: 1.005,
-        transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
-      }}
+      {...hoverProps}
       {...motionProps}
     >
       {children}

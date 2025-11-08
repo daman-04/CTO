@@ -38,10 +38,38 @@
   --radius-tahoe-lg: 16px;
   --radius-tahoe-xl: 24px;
   
-  /* Elevation layers */
-  --elevation-base: 0;
-  --elevation-surface: 1;
-  --elevation-overlay: 2;
+  /* Enhanced elevation system (3-tier) */
+  --elevation-1: 0;
+  --elevation-2: 1;
+  --elevation-3: 2;
+  
+  /* Shadow tiers for elevation */
+  --shadow-1: 0 4px 12px 0 rgba(31, 38, 135, 0.1);
+  --shadow-2: 0 8px 24px 0 rgba(31, 38, 135, 0.15);
+  --shadow-3: 0 12px 36px 0 rgba(31, 38, 135, 0.2);
+  
+  /* Backdrop blur tiers */
+  --blur-1: blur(6px);
+  --blur-2: blur(12px);
+  --blur-3: blur(16px);
+  
+  /* Glass opacity tiers */
+  --glass-alpha-1: rgba(255, 255, 255, 0.15);
+  --glass-alpha-2: rgba(255, 255, 255, 0.25);
+  --glass-alpha-3: rgba(255, 255, 255, 0.35);
+  
+  /* Border opacity tiers */
+  --border-alpha-1: rgba(255, 255, 255, 0.08);
+  --border-alpha-2: rgba(255, 255, 255, 0.12);
+  --border-alpha-3: rgba(255, 255, 255, 0.16);
+  
+  /* Dynamic accent colors */
+  --accent-neutral: rgb(148 163 184);
+  --accent-neutral-weak: rgb(203 213 225);
+  --accent-blue: rgb(71 100 139);
+  --accent-blue-weak: rgb(118 145 180);
+  --accent-purple: rgb(139 92 246);
+  --accent-purple-weak: rgb(196 181 253);
   
   /* Translucency levels */
   --glass-opacity-subtle: 0.3;
@@ -369,6 +397,21 @@
       inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
   }
   
+  /* Dark mode variants for elevation system */
+  .dark {
+    --shadow-1: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 8px 24px 0 rgba(0, 0, 0, 0.4);
+    --shadow-3: 0 12px 36px 0 rgba(0, 0, 0, 0.5);
+    
+    --glass-alpha-1: rgba(30, 41, 59, 0.6);
+    --glass-alpha-2: rgba(30, 41, 59, 0.7);
+    --glass-alpha-3: rgba(30, 41, 59, 0.8);
+    
+    --border-alpha-1: rgba(255, 255, 255, 0.08);
+    --border-alpha-2: rgba(255, 255, 255, 0.12);
+    --border-alpha-3: rgba(255, 255, 255, 0.16);
+  }
+  
   /* Tahoe radius utilities */
   .rounded-tahoe { border-radius: 12px; }
   .rounded-tahoe-sm { border-radius: 8px; }
@@ -535,6 +578,115 @@
     }
   }
   
+  /* 3-tier elevation system */
+  .elevation-1 {
+    background: var(--glass-alpha-1);
+    backdrop-filter: var(--blur-1);
+    -webkit-backdrop-filter: var(--blur-1);
+    border: 1px solid var(--border-alpha-1);
+    box-shadow: var(--shadow-1);
+  }
+  
+  .elevation-2 {
+    background: var(--glass-alpha-2);
+    backdrop-filter: var(--blur-2);
+    -webkit-backdrop-filter: var(--blur-2);
+    border: 1px solid var(--border-alpha-2);
+    box-shadow: var(--shadow-2);
+  }
+  
+  .elevation-3 {
+    background: var(--glass-alpha-3);
+    backdrop-filter: var(--blur-3);
+    -webkit-backdrop-filter: var(--blur-3);
+    border: 1px solid var(--border-alpha-3);
+    box-shadow: var(--shadow-3);
+    position: relative;
+  }
+  
+  /* Glass edge effect for elevation-3 */
+  .glass-edge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+  }
+  
+  /* Ambient cursor reactive layer */
+  .ambient-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(147, 197, 253, 0.1),
+      transparent 40%
+    );
+    transition: opacity 0.3s ease;
+  }
+  
+  .ambient-cursor.disabled {
+    opacity: 0;
+  }
+  
+  /* Accent color utilities */
+  .accent-neutral {
+    --accent: var(--accent-neutral);
+    --accent-weak: var(--accent-neutral-weak);
+  }
+  
+  .accent-blue {
+    --accent: var(--accent-blue);
+    --accent-weak: var(--accent-blue-weak);
+  }
+  
+  .accent-purple {
+    --accent: var(--accent-purple);
+    --accent-weak: var(--accent-purple-weak);
+  }
+  
+  /* Focus ring with accent color */
+  .focus-accent {
+    @apply focus:outline-none;
+  }
+  
+  .focus-accent:focus {
+    box-shadow: 0 0 0 2px var(--accent-weak);
+  }
+  
+  /* 8px baseline grid alignment */
+  .baseline-grid {
+    container-type: inline-size;
+  }
+  
+  .baseline-grid > * {
+    margin-block: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  
+  .baseline-grid > * + * {
+    margin-block-start: 0.5rem; /* 8px */
+  }
+  
   /* Reduce motion support */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -547,8 +699,10 @@
     }
     
     .liquid-morph,
-    .liquid-float {
+    .liquid-float,
+    .ambient-cursor {
       animation: none !important;
+      transition: none !important;
     }
   }
 }

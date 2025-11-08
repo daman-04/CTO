@@ -1,299 +1,151 @@
-# App Shell Implementation Notes
+# Enhanced Tahoe UI Implementation Notes
 
-## Ticket: Build App Shell
+## New Tokens and Props
 
-### Implementation Summary
+### Motion System (src/lib/motion.ts)
 
-Successfully implemented a complete app shell with React Router, Zustand state management, and macOS Tahoe-inspired design system.
+**Global Motion Tokens:**
+- `tahoeMotion.DURATION`: FAST (180ms), BASE (220ms), SLOW (260ms)
+- `tahoeMotion.SPRING`: GENTLE (stiffness: 240, damping: 22), SMOOTH (300, 25), SNAPPY (380, 30)
+- `tahoeMotion.HOVER`: LIFT_SMALL (-2px), LIFT_MEDIUM (-4px), SCALE_SUBTLE (1.01)
 
-## What Was Built
+**New Variants:**
+- `panelEnter`: Enhanced panel entrance with backdrop blur animation
+- `tileStagger`: Staggered tile animation for dashboard
+- `hoverLift`: Micro-motion hover with subtle lift and scale
+- `fadeScaleIn`: Mount animation with fade and scale
 
-### 1. React Router Setup ✅
+### 3-Tier Elevation System
 
-**Modified Files:**
-- `src/App.tsx` - Configured nested routes for all modules
-- `src/main.tsx` - Added BrowserRouter wrapper
-
-**Routes Implemented:**
-```
-/ (AppShell Layout)
-├── / (Dashboard)
-├── /courses (Courses)
-├── /faculty (Faculty)
-├── /students (Students)
-├── /library (Library)
-├── /admin (Admin)
-├── /notifications (Notifications)
-└── /settings (Settings)
-```
-
-All routes use the AppShell component as a layout wrapper via React Router's `<Outlet />` pattern.
-
-### 2. AppShell Component ✅
-
-**New File:** `src/components/AppShell.tsx`
-
-**Features:**
-- **Frosted Glass Sidebar**
-  - Fixed 256px width (w-64)
-  - Navigation links with SF Symbol-inspired icons (Unicode)
-  - Active state highlighting with blue accent
-  - Hover/tap animations
-  - Smooth transitions
-  
-- **Floating Top Bar**
-  - Search field placeholder (glass-subtle styling)
-  - Live clock display (updates every second, 12-hour format, monospace)
-  - Notification button with red badge indicator
-  - User avatar with initials (JD placeholder)
-  - All interactive elements have hover/tap animations
-  
-- **Main Content Area**
-  - Flexible flex-1 container
-  - React Router Outlet for page content
-  - Fade-in animation on route changes
-  
-- **Notification Drawer**
-  - Slides in from right (320px width)
-  - AnimatePresence for smooth entry/exit
-  - Placeholder notification content
-  - Close button
-
-### 3. Zustand Global State Store ✅
-
-**New File:** `src/state/appStore.ts`
-
-**State Properties:**
-```typescript
-{
-  selectedPage: NavigationPage      // 'dashboard' | 'courses' | etc.
-  themeMode: ThemeMode              // 'light' | 'dark'
-  isNotificationDrawerOpen: boolean // Drawer visibility
-  isSidebarCollapsed: boolean       // Sidebar state
+**GlassPanel Props:**
+```tsx
+interface GlassPanelProps {
+  elevation?: '1' | '2' | '3'  // New elevation tiers
+  interactive?: boolean           // Enable hover lift/refraction
+  // ... existing props
 }
 ```
 
-**Actions:**
-- `setSelectedPage(page)` - Update active page
-- `setThemeMode(mode)` - Switch theme
-- `toggleNotificationDrawer()` - Toggle notification drawer
-- `setNotificationDrawerOpen(isOpen)` - Set drawer state directly
-- `toggleSidebar()` - Collapse/expand sidebar
+**Elevation Tiers:**
+- **Elevation 1**: 6px blur, subtle opacity, light shadow
+- **Elevation 2**: 12px blur, medium opacity, moderate shadow  
+- **Elevation 3**: 16px blur, strong opacity, deep shadow + glass edge effect
 
-### 4. Module Pages ✅
+### Theme Store (src/state/theme.ts)
 
-**New Files:**
-- `src/modules/Dashboard.tsx` - Dashboard with quick stats cards
-- `src/modules/Courses.tsx` - Course management placeholder
-- `src/modules/Faculty.tsx` - Faculty management placeholder
-- `src/modules/Students.tsx` - Student management placeholder
-- `src/modules/Library.tsx` - Library resources placeholder
-- `src/modules/Admin.tsx` - Admin panel placeholder
-- `src/modules/Notifications.tsx` - Notifications center placeholder
-- `src/modules/Settings.tsx` - Settings page placeholder
-- `src/modules/index.ts` - Export barrel file
-
-All pages include:
-- Fade-in animation on load
-- Consistent heading structure (h2 + description)
-- GlassPanel containers
-- Responsive layout
-
-### 5. Custom Hooks ✅
-
-**New File:** `src/hooks/useAppState.ts`
-
-Convenience hook for accessing app store state and actions:
-
+**State Interface:**
 ```typescript
-import { useAppState } from '../hooks'
-
-const {
-  selectedPage,
-  themeMode,
-  toggleNotificationDrawer,
-  // ... all state and actions
-} = useAppState()
+interface ThemeState {
+  theme: 'system' | 'light' | 'dark'
+  accent: 'neutral' | 'blue' | 'purple'
+  motion: 'full' | 'reduced'
+}
 ```
 
-### 6. Theme Support ✅
+**Hooks:**
+- `useThemeStore()`: Access theme state and actions
+- `useEffectiveTheme()`: Get effective theme considering system preference
+- `useReducedMotion()`: Check if reduced motion is preferred
 
-**Modified File:** `src/index.css`
+### CSS Enhancements (src/index.css)
 
-Added dark mode support:
-- `body.dark` class triggers dark theme
-- Dark gradient backgrounds
-- Dark glass effect variants
-- Ready for Settings page theme toggle implementation
+**New CSS Custom Properties:**
+- `--shadow-1/2/3`: Progressive shadow intensities
+- `--blur-1/2/3`: Backdrop blur tiers (6px, 12px, 16px)
+- `--glass-alpha-1/2/3`: Glass opacity levels
+- `--border-alpha-1/2/3`: Border opacity levels
+- `--accent-*`: Dynamic accent color variables
 
-Glass effects adapt automatically:
-- Light mode: white translucent backgrounds
-- Dark mode: dark blue-gray translucent backgrounds
+**New Utility Classes:**
+- `.elevation-1/2/3`: Apply elevation tier styles
+- `.glass-edge`: Inner edge glow for elevation-3
+- `.ambient-cursor`: Cursor reactive background layer
+- `.accent-*`: Apply accent color theme
+- `.focus-accent`: Accent-colored focus rings
+- `.baseline-grid`: 8px baseline grid alignment
 
-### 7. Export Updates ✅
+## Component Updates
 
-**Modified Files:**
-- `src/components/index.ts` - Added AppShell export
-- `src/state/index.ts` - Created with appStore exports
-- `src/hooks/index.ts` - Created with useAppState export
-- `src/modules/index.ts` - Created with all page exports
+### GlassPanel
+- Supports `elevation` prop for 3-tier depth system
+- `interactive` prop enables hover lift and edge glow
+- Uses new motion variants for smoother animations
 
-## Design System Compliance ✅
+### GlassButton
+- Enhanced hover micro-motion with spring physics
+- Accent-tinted focus rings based on theme store
+- Improved tap feedback with snappy springs
 
-### Spacing (16px Grid)
-- All padding/margins use multiples of 16px
-- `gap-4` (16px) between elements
-- `p-4` (16px) for content padding
-- `p-6` (24px) for larger panels
+### IconBadge
+- `pulseOnMount` prop for fade-scale entrance animation
+- Spring-based hover and tap interactions
 
-### Border Radius (12px Base)
-- `rounded-tahoe-sm` (8px) for small elements
-- `rounded-tahoe` (12px) for standard elements
-- `rounded-tahoe-lg` (16px) for large panels
-- `rounded-tahoe-xl` (24px) for special cases
+### Dashboard Tiles
+- All tiles support `elevation` and `interactive` props
+- Staggered entrance animation on first mount
+- Applied elevation hierarchy: GPA (3), Attendance/Courses (2), Announcements (1)
 
-### Glass Morphism
-- Sidebar: `glass-medium` (70% opacity)
-- Top bar: `glass-medium` (70% opacity)
-- Notification drawer: `glass-medium` (70% opacity)
-- Search field: `glass-subtle` (30% opacity)
-- All use `backdrop-filter: blur(12px)`
+## Usage Examples
 
-### Elevation
-- Sidebar: `elevation="overlay"` with shadow-md
-- Top bar: `elevation="overlay"` with shadow-md
-- Background wallpaper visible beneath all layers
+### GlassPanel with Elevation
+```tsx
+<GlassPanel elevation="3" interactive className="p-6">
+  <Typography>Elevation 3 with glass edge effect</Typography>
+</GlassPanel>
 
-### Typography
-- SF Pro Text for all text
-- Heading sizes: h2 for page titles
-- Body text for descriptions
-- Font weights: 400 (normal), 500 (medium)
+<GlassPanel elevation="1">
+  <Typography>Subtle elevation panel</Typography>
+</GlassPanel>
+```
 
-### Colors
-- Tahoe neutral grays for text and backgrounds
-- Blue accent (blue-600) for active states
-- Subtle borders with gray-200/50 opacity
-- Red badge for notification indicator
+### Theme Store Usage
+```tsx
+import { useThemeStore } from '../state/theme'
 
-### Animations
-- Framer Motion throughout
-- Tahoe timing: 180-250ms spring easing
-- Fade-in for page transitions
-- Scale on hover/tap for interactive elements
-- Slide animations for drawer
+const { accent, motion } = useThemeStore()
+const { setAccent, setMotion } = useThemeStore.getState()
+```
 
-## Acceptance Criteria ✅
+### Motion Variants
+```tsx
+<motion.div
+  variants={tahoeVariants.tileStagger}
+  initial="initial"
+  animate="animate"
+>
+  <YourComponent />
+</motion.div>
+```
 
-### ✅ Navigation Updates Route Without Reloads
-- React Router handles all navigation
-- SPA behavior maintained
-- No page refreshes on route changes
-- Active page highlighted in sidebar
+## Ambient Effects
 
-### ✅ Layout Respects Tahoe Styling
-- Glass morphism applied to all shell components
-- 16px grid spacing throughout
-- 12px border radii on all panels
-- SF Pro Text typography
-- Neutral color palette with blue accents
+### Cursor Reactive Layer
+- GPU-optimized radial gradient follows cursor
+- Automatically disabled when motion='reduced'
+- Subtle opacity (0.6) for performance
 
-### ✅ Top Bar Floats with Translucency
-- Fixed position with glass-medium effect
-- Backdrop blur applied
-- Background gradient visible beneath
-- All interactive elements functional
+### Glass Edge Effect
+- Applied only to elevation-3 panels
+- CSS mask-based inner border gradient
+- No performance impact
 
-### ✅ Global State Toggles Function
-- Notification drawer opens/closes smoothly
-- State persists across navigation
-- Animation on drawer entry/exit
-- State accessible from any component
+## Accessibility
 
-### ✅ Background Wallpaper Visible
-- Gradient background applied to body
-- Glass effects show blur through to background
-- Elevation system maintains visual hierarchy
+- Respects `prefers-reduced-motion` system setting
+- AA contrast maintained on all glass surfaces
+- Focus rings use accent colors for visibility
+- All animations have reduced-motion fallbacks
 
-### ✅ Dark/Light Theme Support Ready
-- CSS variables configured
-- Dark mode classes prepared
-- Glass variants adapt to theme
-- Ready for Settings page integration
+## Performance
 
-## Files Created
+- Single stagger animation on dashboard first mount
+- Ambient cursor effect disabled for reduced motion
+- Hardware-accelerated transforms for hover effects
+- Optimized backdrop blur values
 
-1. `src/state/appStore.ts` - Zustand global state store
-2. `src/state/index.ts` - State exports
-3. `src/hooks/useAppState.ts` - State access hook
-4. `src/hooks/index.ts` - Hook exports
-5. `src/components/AppShell.tsx` - Main layout component
-6. `src/modules/Dashboard.tsx` - Dashboard page
-7. `src/modules/Courses.tsx` - Courses page
-8. `src/modules/Faculty.tsx` - Faculty page
-9. `src/modules/Students.tsx` - Students page
-10. `src/modules/Library.tsx` - Library page
-11. `src/modules/Admin.tsx` - Admin page
-12. `src/modules/Notifications.tsx` - Notifications page
-13. `src/modules/Settings.tsx` - Settings page
-14. `src/modules/index.ts` - Module exports
-15. `APP_SHELL.md` - Documentation
-16. `IMPLEMENTATION_NOTES.md` - This file
+## Browser Support
 
-## Files Modified
-
-1. `src/App.tsx` - Added React Router configuration
-2. `src/main.tsx` - Added BrowserRouter wrapper
-3. `src/index.css` - Added dark mode support
-4. `src/components/index.ts` - Added AppShell export
-
-## Technical Details
-
-### Dependencies Used
-- `react-router-dom` v7.9.5 - Routing
-- `zustand` v5.0.8 - State management
-- `framer-motion` v12.23.24 - Animations
-- `classnames` v2.5.1 - Conditional classes
-
-### Performance Considerations
-- Clock updates via setInterval (cleared on unmount)
-- AnimatePresence for smooth drawer animations
-- Route-based code splitting ready (can add lazy loading)
-- Zustand selective subscriptions for optimal re-renders
-
-### Browser Compatibility
-- Modern browsers (ES2020+)
-- CSS backdrop-filter with -webkit- prefix
-- No polyfills needed for target browsers
-
-## Testing Verified
-
-✅ Build succeeds: `npm run build`
-✅ Dev server starts: `npm run dev`
-✅ TypeScript compiles without errors
-✅ All routes accessible
-✅ Navigation works correctly
-✅ State management functional
-✅ Animations smooth
-✅ Responsive layout works
-
-## Next Steps (Future Enhancements)
-
-1. **Settings Page**: Implement theme toggle
-2. **Search**: Add search functionality
-3. **User Menu**: Profile dropdown on avatar
-4. **Sidebar Collapse**: Implement collapse/expand
-5. **Breadcrumbs**: Add breadcrumb navigation
-6. **Keyboard Shortcuts**: Add navigation shortcuts
-7. **Real Notifications**: Connect to notification system
-8. **Toast System**: Add toast notifications
-9. **Loading States**: Add skeleton loaders
-10. **Error Boundaries**: Add error handling
-
-## Notes
-
-- Navigation icons use Unicode symbols (◧, ◉, ◈, ◎, ◫, ◐, ◑) as SF Symbol alternatives
-- Clock uses browser's locale time formatting (12-hour with AM/PM)
-- User initials "JD" are placeholder (ready for auth integration)
-- Notification badge is always visible (ready for count integration)
-- All placeholder content marked "coming soon" for easy identification
+- Modern browsers with CSS backdrop-filter support
+- Graceful degradation for older browsers
+- Webkit prefix support for Safari
+- CSS mask properties for edge effects
