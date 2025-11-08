@@ -19,7 +19,10 @@ export function Typography({
   className,
   ...motionProps
 }: TypographyProps) {
-  const baseClasses = 'font-sans'
+  const getBaseClasses = (variant: string) => {
+    // Use SF Mono for captions, SF Pro Text for everything else
+    return variant === 'caption' ? 'font-mono' : 'font-sans'
+  }
   
   const variantClasses = {
     h1: 'text-4xl md:text-5xl font-light tracking-tight mb-4',
@@ -47,7 +50,7 @@ export function Typography({
   }
   
   const typographyClasses = classNames(
-    baseClasses,
+    getBaseClasses(variant),
     variantClasses[variant],
     weightClasses[weight],
     colorClasses[color],

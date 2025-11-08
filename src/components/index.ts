@@ -20,5 +20,13 @@ export { FacultyTable } from './FacultyTable'
 export { FacultyFilters } from './FacultyFilters'
 export { FacultyFloatingActions } from './FacultyFloatingActions'
 
+// Admin Analytics Components
+export { CircularChart } from './CircularChart'
+export { BarChart } from './BarChart'
+export { LineChart } from './LineChart'
+export { DepartmentsCard } from './DepartmentsCard'
+export { ExamStatsCard } from './ExamStatsCard'
+export { AttendanceTrendsCard } from './AttendanceTrendsCard'
+
 // Legacy example component (to be removed)
 export { Button } from './Button.example'

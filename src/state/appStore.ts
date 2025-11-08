@@ -90,6 +90,41 @@ export interface StudentData {
   lastLogin: string
 }
 
+export interface DepartmentData {
+  id: string
+  name: string
+  studentCount: number
+  facultyCount: number
+  averageGPA: number
+  graduationRate: number
+  trend: 'up' | 'down' | 'stable'
+}
+
+export interface ExamStatsData {
+  totalExams: number
+  averageScore: number
+  passRate: number
+  upcomingExams: number
+  recentPerformance: Array<{
+    date: string
+    score: number
+    passRate: number
+  }>
+}
+
+export interface AttendanceTrendData {
+  currentRate: number
+  monthlyData: Array<{
+    month: string
+    rate: number
+    totalClasses: number
+  }>
+  departmentBreakdown: Array<{
+    department: string
+    rate: number
+  }>
+}
+
 export interface DashboardState {
   gpaData: GPAData
   attendanceData: AttendanceData
@@ -112,6 +147,12 @@ interface FacultyFilterState {
   sortOrder: 'asc' | 'desc'
 }
 
+interface AdminState {
+  departmentsData: DepartmentData[]
+  examStatsData: ExamStatsData
+  attendanceTrendData: AttendanceTrendData
+}
+
 interface AppState {
   selectedPage: NavigationPage
   themeMode: ThemeMode
@@ -123,6 +164,7 @@ interface AppState {
   facultyData: FacultyData[]
   studentsData: StudentData[]
   facultyFilter: FacultyFilterState
+  adminData: AdminState
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -530,6 +572,88 @@ const mockStudentsData: StudentData[] = [
   },
 ]
 
+const mockAdminData: AdminState = {
+  departmentsData: [
+    {
+      id: '1',
+      name: 'Computer Science',
+      studentCount: 1250,
+      facultyCount: 45,
+      averageGPA: 3.72,
+      graduationRate: 94,
+      trend: 'up',
+    },
+    {
+      id: '2',
+      name: 'Engineering',
+      studentCount: 980,
+      facultyCount: 38,
+      averageGPA: 3.58,
+      graduationRate: 91,
+      trend: 'stable',
+    },
+    {
+      id: '3',
+      name: 'Mathematics',
+      studentCount: 420,
+      facultyCount: 22,
+      averageGPA: 3.65,
+      graduationRate: 89,
+      trend: 'down',
+    },
+    {
+      id: '4',
+      name: 'Physics',
+      studentCount: 315,
+      facultyCount: 18,
+      averageGPA: 3.48,
+      graduationRate: 87,
+      trend: 'up',
+    },
+    {
+      id: '5',
+      name: 'Interaction Design',
+      studentCount: 280,
+      facultyCount: 15,
+      averageGPA: 3.81,
+      graduationRate: 96,
+      trend: 'up',
+    },
+  ],
+  examStatsData: {
+    totalExams: 156,
+    averageScore: 78.5,
+    passRate: 87.3,
+    upcomingExams: 12,
+    recentPerformance: [
+      { date: 'Oct', score: 76.2, passRate: 85.1 },
+      { date: 'Nov', score: 78.5, passRate: 87.3 },
+      { date: 'Dec', score: 81.3, passRate: 89.7 },
+      { date: 'Jan', score: 79.8, passRate: 88.2 },
+      { date: 'Feb', score: 82.4, passRate: 91.5 },
+      { date: 'Mar', score: 78.5, passRate: 87.3 },
+    ],
+  },
+  attendanceTrendData: {
+    currentRate: 91.2,
+    monthlyData: [
+      { month: 'Oct', rate: 88.5, totalClasses: 2450 },
+      { month: 'Nov', rate: 90.2, totalClasses: 2380 },
+      { month: 'Dec', rate: 86.8, totalClasses: 1890 },
+      { month: 'Jan', rate: 92.1, totalClasses: 2560 },
+      { month: 'Feb', rate: 89.7, totalClasses: 2420 },
+      { month: 'Mar', rate: 91.2, totalClasses: 2650 },
+    ],
+    departmentBreakdown: [
+      { department: 'Computer Science', rate: 93.5 },
+      { department: 'Engineering', rate: 89.8 },
+      { department: 'Mathematics', rate: 91.2 },
+      { department: 'Physics', rate: 87.6 },
+      { department: 'Interaction Design', rate: 94.1 },
+    ],
+  },
+}
+
 export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
@@ -552,6 +676,7 @@ export const useAppStore = create<AppState>((set) => ({
     sortBy: 'name',
     sortOrder: 'asc',
   },
+  adminData: mockAdminData,
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
   toggleNotificationDrawer: () => set((state) => ({ 
