@@ -1,9 +1,11 @@
-import React from 'react'
 import { motion } from 'framer-motion'
-import { GlassPanel, Typography } from '../components'
+import { Typography, GPATile, AttendanceTile, ActiveCoursesTile, AnnouncementsTile } from '../components'
+import { useAppStore } from '../state/appStore'
 import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 export function Dashboard() {
+  const dashboardData = useAppStore((state) => state.dashboardData)
+
   return (
     <motion.div
       initial="initial"
@@ -17,28 +19,28 @@ export function Dashboard() {
         Welcome to your university management dashboard
       </Typography>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        <GlassPanel className="p-6">
-          <Typography variant="h4">Quick Stats</Typography>
-          <Typography variant="body" color="secondary" className="mt-2">
-            Overview of key metrics
-          </Typography>
-        </GlassPanel>
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"
+        variants={tahoeVariants.staggerContainer}
+        initial="initial"
+        animate="animate"
+      >
+        <motion.div variants={tahoeVariants.staggerItem}>
+          <GPATile data={dashboardData.gpaData} index={0} />
+        </motion.div>
 
-        <GlassPanel className="p-6">
-          <Typography variant="h4">Recent Activity</Typography>
-          <Typography variant="body" color="secondary" className="mt-2">
-            Latest updates and changes
-          </Typography>
-        </GlassPanel>
+        <motion.div variants={tahoeVariants.staggerItem}>
+          <AttendanceTile data={dashboardData.attendanceData} index={1} />
+        </motion.div>
 
-        <GlassPanel className="p-6">
-          <Typography variant="h4">Notifications</Typography>
-          <Typography variant="body" color="secondary" className="mt-2">
-            Important alerts and messages
-          </Typography>
-        </GlassPanel>
-      </div>
+        <motion.div variants={tahoeVariants.staggerItem}>
+          <ActiveCoursesTile data={dashboardData.activeCoursesData} index={2} />
+        </motion.div>
+
+        <motion.div variants={tahoeVariants.staggerItem}>
+          <AnnouncementsTile data={dashboardData.announcementsData} index={3} />
+        </motion.div>
+      </motion.div>
     </motion.div>
   )
 }
