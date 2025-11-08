@@ -36,7 +36,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (value: boo
       whileTap={{ scale: 0.95 }}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-7 w-12 rounded-full transition-all ${
-        checked ? 'bg-blue-500' : 'bg-gray-300'
+        checked ? 'bg-accent-600' : 'bg-tahoe-300'
       }`}
     >
       <motion.div
@@ -149,35 +149,13 @@ export function Settings() {
         <Typography variant="h5" className="text-base">Appearance</Typography>
         <GlassPanel variant="medium" elevation="overlay">
           <SettingItem
-            label="Theme Mode"
-            description="Switch between light and dark theme with smooth opacity transitions"
+            label="Dark Mode"
+            description="Enable dark theme with smooth transitions and adaptive liquid glass effects"
           >
-            <div className="flex items-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setThemeMode('light')}
-                className={`px-4 py-2 rounded-tahoe-sm font-medium transition-all ${
-                  themeMode === 'light'
-                    ? 'glass-strong text-blue-600 shadow-sm'
-                    : 'glass-light text-gray-700 hover:glass-medium'
-                }`}
-              >
-                ☀️ Light
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setThemeMode('dark')}
-                className={`px-4 py-2 rounded-tahoe-sm font-medium transition-all ${
-                  themeMode === 'dark'
-                    ? 'glass-strong text-blue-600 shadow-sm'
-                    : 'glass-light text-gray-700 hover:glass-medium'
-                }`}
-              >
-                🌙 Dark
-              </motion.button>
-            </div>
+            <Toggle
+              checked={themeMode === 'dark'}
+              onChange={(checked) => setThemeMode(checked ? 'dark' : 'light')}
+            />
           </SettingItem>
         </GlassPanel>
       </motion.div>
