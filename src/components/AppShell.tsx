@@ -3,9 +3,9 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { useAppStore } from '../state/appStore'
-import { GlassPanel } from './GlassPanel'
+import { GlassPanel, NotificationItem } from './index'
 import { Typography } from './Typography'
-import { tahoeVariants, tahoeTransitions } from '../lib/motion'
+import { tahoeVariants, tahoeTransitions, createTahoeTransition } from '../lib/motion'
 
 interface NavItem {
   id: string
@@ -29,7 +29,13 @@ export function AppShell() {
   const location = useLocation()
   const navigate = useNavigate()
   const [currentTime, setCurrentTime] = useState(new Date())
-  const { isNotificationDrawerOpen, toggleNotificationDrawer } = useAppStore()
+  const { 
+    isNotificationDrawerOpen, 
+    toggleNotificationDrawer, 
+    notificationsData,
+    markNotificationAsRead,
+    markAllNotificationsAsRead
+  } = useAppStore()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -159,7 +165,17 @@ export function AppShell() {
               >
                 <span className="text-xl">◐</span>
                 {/* Notification Badge */}
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                {notificationsData.filter(n => !n.read).length > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center"
+                  >
+                    <Typography variant="caption" className="text-white text-xs font-medium">
+                      {notificationsData.filter(n => !n.read).length}
+                    </Typography>
+                  </motion.div>
+                )}
               </motion.button>
 
               {/* User Avatar */}
@@ -195,35 +211,86 @@ export function AppShell() {
             initial={{ x: 300, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 300, opacity: 0 }}
-            transition={tahoeTransitions.slideUp}
-            className="w-80 p-4 flex-shrink-0"
+            transition={createTahoeTransition('SMOOTH', 200)}
+            className="fixed right-0 top-0 h-full w-80 p-4 z-50 flex-shrink-0"
           >
             <GlassPanel
               variant="medium"
-              className="h-full p-6"
+              className="h-full flex flex-col"
               elevation="overlay"
             >
-              <div className="flex items-center justify-between mb-6">
-                <Typography variant="h4">Notifications</Typography>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleNotificationDrawer}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  ✕
-                </motion.button>
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200/20">
+                <div className="flex items-center gap-3">
+                  <Typography variant="h4">Notifications</Typography>
+                  {notificationsData.filter(n => !n.read).length > 0 && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
+                    >
+                      <Typography variant="caption" className="text-white text-xs font-medium">
+                        {notificationsData.filter(n => !n.read).length}
+                      </Typography>
+                    </motion.div>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {notificationsData.some(n => !n.read) && (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={markAllNotificationsAsRead}
+                      className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                    >
+                      Mark all read
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={toggleNotificationDrawer}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    ✕
+                  </motion.button>
+                </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="glass-subtle rounded-tahoe-sm p-4">
-                  <Typography variant="body" weight="medium" className="text-sm">
-                    Welcome!
-                  </Typography>
-                  <Typography variant="caption" color="secondary" className="mt-1">
-                    You have no new notifications
-                  </Typography>
-                </div>
+              {/* Notification List */}
+              <div className="flex-1 overflow-y-auto p-6 scrollbar-tahoe">
+                {notificationsData.length > 0 ? (
+                  <motion.div
+                    variants={tahoeVariants.staggerContainer}
+                    initial="initial"
+                    animate="animate"
+                    className="space-y-3"
+                  >
+                    {notificationsData.map((notification) => (
+                      <NotificationItem
+                        key={notification.id}
+                        notification={notification}
+                        onRead={markNotificationAsRead}
+                      />
+                    ))}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="glass-subtle rounded-tahoe-sm p-6 text-center"
+                  >
+                    <div className="text-4xl mb-4">◐</div>
+                    <Typography variant="body" weight="medium" className="text-sm mb-2">
+                      All caught up!
+                    </Typography>
+                    <Typography variant="caption" color="secondary">
+                      You have no notifications
+                    </Typography>
+                  </motion.div>
+                )}
               </div>
             </GlassPanel>
           </motion.aside>

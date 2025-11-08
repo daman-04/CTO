@@ -146,6 +146,16 @@ export interface LibraryLogEntry {
   status: 'active' | 'overdue' | 'returned'
 }
 
+export interface NotificationData {
+  id: string
+  title: string
+  message: string
+  type: 'academic' | 'administrative' | 'event' | 'system' | 'reminder'
+  timestamp: string
+  read: boolean
+  priority: 'low' | 'medium' | 'high'
+}
+
 interface LibraryFilterState {
   searchQuery: string
   selectedType: 'all' | 'issue' | 'return'
@@ -190,6 +200,7 @@ interface AppState {
   libraryData: LibraryLogEntry[]
   libraryFilter: LibraryFilterState
   adminAnalyticsData: AdminAnalyticsData
+  notificationsData: NotificationData[]
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -208,6 +219,8 @@ interface AppState {
   setLibrarySort: (sortBy: LibraryFilterState['sortBy'], sortOrder?: LibraryFilterState['sortOrder']) => void
   issueLibraryItem: (itemId: string, studentName: string) => void
   returnLibraryItem: (logEntryId: string) => void
+  markNotificationAsRead: (notificationId: string) => void
+  markAllNotificationsAsRead: () => void
 }
 
 const mockDashboardData: DashboardState = {
@@ -453,6 +466,81 @@ const mockFacultyData: FacultyData[] = [
     phone: '(555) 012-3456',
     office: 'Engineering Lab 250',
     status: 'active',
+  },
+]
+
+const mockNotificationsData: NotificationData[] = [
+  {
+    id: '1',
+    title: 'Final Exams Schedule Released',
+    message: 'The final exam schedule for Fall 2024 has been published. Check your student portal for specific exam times and locations.',
+    type: 'academic',
+    timestamp: '2 hours ago',
+    read: false,
+    priority: 'high',
+  },
+  {
+    id: '2',
+    title: 'Assignment Due: Advanced Algorithms',
+    message: 'Reminder: Your final project for Advanced Algorithms is due tomorrow at 11:59 PM.',
+    type: 'academic',
+    timestamp: '4 hours ago',
+    read: false,
+    priority: 'medium',
+  },
+  {
+    id: '3',
+    title: 'Campus Closure Notice',
+    message: 'University will be closed on Monday for maintenance. All classes and offices will be closed.',
+    type: 'administrative',
+    timestamp: '6 hours ago',
+    read: true,
+    priority: 'medium',
+  },
+  {
+    id: '4',
+    title: 'Tech Conference Registration Open',
+    message: 'Registration is now open for the Annual Tech Conference. Early bird discounts available until Friday.',
+    type: 'event',
+    timestamp: '1 day ago',
+    read: true,
+    priority: 'low',
+  },
+  {
+    id: '5',
+    title: 'Library Book Return Reminder',
+    message: 'You have 2 library books due for return this week. Please return them to avoid late fees.',
+    type: 'reminder',
+    timestamp: '2 days ago',
+    read: false,
+    priority: 'medium',
+  },
+  {
+    id: '6',
+    title: 'System Maintenance Scheduled',
+    message: 'The student portal will be unavailable for maintenance on Sunday from 2:00 AM to 6:00 AM.',
+    type: 'system',
+    timestamp: '3 days ago',
+    read: true,
+    priority: 'low',
+  },
+  {
+    id: '7',
+    title: 'New Course Available: AI Ethics',
+    message: 'A new elective course on AI Ethics is now open for registration for Spring 2025.',
+    type: 'academic',
+    timestamp: '4 days ago',
+    read: true,
+    priority: 'low',
+  },
+  {
+    id: '8',
+    title: 'Faculty Office Hours Update',
+    message: 'Dr. Sarah Johnson has updated her office hours for the remainder of the semester.',
+    type: 'administrative',
+    timestamp: '5 days ago',
+    read: true,
+    priority: 'low',
   },
 ]
 
@@ -804,6 +892,7 @@ const mockStudentsData: StudentData[] = [
     sortOrder: 'desc',
   },
   adminAnalyticsData: mockAdminAnalyticsData,
+  notificationsData: mockNotificationsData,
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
   toggleNotificationDrawer: () => set((state) => ({ 
@@ -877,5 +966,15 @@ const mockStudentsData: StudentData[] = [
         ? { ...entry, status: 'returned', type: 'return', returnedDate: new Date().toISOString().split('T')[0] }
         : entry
     )
+  })),
+  markNotificationAsRead: (notificationId) => set((state) => ({
+    notificationsData: state.notificationsData.map(notification => 
+      notification.id === notificationId 
+        ? { ...notification, read: true }
+        : notification
+    )
+  })),
+  markAllNotificationsAsRead: () => set((state) => ({
+    notificationsData: state.notificationsData.map(notification => ({ ...notification, read: true }))
   })),
 }))
