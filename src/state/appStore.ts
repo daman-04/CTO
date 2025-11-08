@@ -41,6 +41,15 @@ export interface AnnouncementData {
   type: 'academic' | 'administrative' | 'event'
 }
 
+export interface NotificationData {
+  id: string
+  title: string
+  message: string
+  timestamp: string
+  type: 'alert' | 'info' | 'success' | 'warning'
+  read: boolean
+}
+
 export interface CourseData {
   id: string
   code: string
@@ -123,6 +132,7 @@ interface AppState {
   facultyData: FacultyData[]
   studentsData: StudentData[]
   facultyFilter: FacultyFilterState
+  notificationsData: NotificationData[]
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -530,6 +540,57 @@ const mockStudentsData: StudentData[] = [
   },
 ]
 
+const mockNotificationsData: NotificationData[] = [
+  {
+    id: '1',
+    title: 'Assignment Submitted',
+    message: 'Your Advanced Algorithms homework has been submitted successfully.',
+    timestamp: '2 minutes ago',
+    type: 'success',
+    read: false,
+  },
+  {
+    id: '2',
+    title: 'Class Reminder',
+    message: 'Machine Learning class starts in 1 hour in Tech Hall 402.',
+    timestamp: '58 minutes ago',
+    type: 'info',
+    read: false,
+  },
+  {
+    id: '3',
+    title: 'Grade Posted',
+    message: 'Your midterm exam grade for Database Systems has been posted: 87/100',
+    timestamp: '3 hours ago',
+    type: 'info',
+    read: true,
+  },
+  {
+    id: '4',
+    title: 'Deadline Approaching',
+    message: 'Project submission deadline for Web Development is tomorrow at 11:59 PM.',
+    timestamp: '1 day ago',
+    type: 'warning',
+    read: true,
+  },
+  {
+    id: '5',
+    title: 'System Maintenance',
+    message: 'Scheduled system maintenance will occur this weekend from 2 AM to 4 AM.',
+    timestamp: '2 days ago',
+    type: 'alert',
+    read: true,
+  },
+  {
+    id: '6',
+    title: 'Enrollment Confirmation',
+    message: 'You have been successfully enrolled in Artificial Intelligence for next semester.',
+    timestamp: '3 days ago',
+    type: 'success',
+    read: true,
+  },
+]
+
 export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
@@ -552,6 +613,7 @@ export const useAppStore = create<AppState>((set) => ({
     sortBy: 'name',
     sortOrder: 'asc',
   },
+  notificationsData: mockNotificationsData,
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
   toggleNotificationDrawer: () => set((state) => ({ 
