@@ -15,5 +15,10 @@ export { AnnouncementsTile } from './AnnouncementsTile'
 export { CoursesToolbar } from './CoursesToolbar'
 export { CourseTile } from './CourseTile'
 
+// Faculty Module
+export { FacultyTable } from './FacultyTable'
+export { FacultyFilters } from './FacultyFilters'
+export { FacultyFloatingActions } from './FacultyFloatingActions'
+
 // Legacy example component (to be removed)
 export { Button } from './Button.example'
