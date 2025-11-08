@@ -12,6 +12,12 @@ export type NavigationPage =
   | 'notifications' 
   | 'settings'
 
+export interface PreferencesState {
+  reducedMotion: boolean
+  dashboardRefreshInterval: number
+  notificationsRefreshInterval: number
+}
+
 export interface GPAData {
   currentGPA: number
   targetGPA: number
@@ -189,6 +195,7 @@ interface FacultyFilterState {
 interface AppState {
   selectedPage: NavigationPage
   themeMode: ThemeMode
+  preferences: PreferencesState
   isNotificationDrawerOpen: boolean
   isSidebarCollapsed: boolean
   dashboardData: DashboardState
@@ -203,6 +210,9 @@ interface AppState {
   notificationsData: NotificationData[]
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
+  setReducedMotion: (enabled: boolean) => void
+  setDashboardRefreshInterval: (interval: number) => void
+  setNotificationsRefreshInterval: (interval: number) => void
   toggleNotificationDrawer: () => void
   setNotificationDrawerOpen: (isOpen: boolean) => void
   toggleSidebar: () => void
@@ -864,6 +874,11 @@ const mockStudentsData: StudentData[] = [
   export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
+  preferences: {
+    reducedMotion: false,
+    dashboardRefreshInterval: 30,
+    notificationsRefreshInterval: 15,
+  },
   isNotificationDrawerOpen: false,
   isSidebarCollapsed: false,
   dashboardData: mockDashboardData,
@@ -895,6 +910,15 @@ const mockStudentsData: StudentData[] = [
   notificationsData: mockNotificationsData,
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
+  setReducedMotion: (enabled) => set((state) => ({
+    preferences: { ...state.preferences, reducedMotion: enabled }
+  })),
+  setDashboardRefreshInterval: (interval) => set((state) => ({
+    preferences: { ...state.preferences, dashboardRefreshInterval: interval }
+  })),
+  setNotificationsRefreshInterval: (interval) => set((state) => ({
+    preferences: { ...state.preferences, notificationsRefreshInterval: interval }
+  })),
   toggleNotificationDrawer: () => set((state) => ({ 
     isNotificationDrawerOpen: !state.isNotificationDrawerOpen 
   })),

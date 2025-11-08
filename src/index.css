@@ -127,9 +127,10 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    transition: background 300ms ease-in-out, color 300ms ease-in-out;
   }
 
-  /* Dark mode support (ready for future implementation) */
+  /* Dark mode with smooth opacity transition */
   body.dark {
     background: linear-gradient(
       to bottom right,
@@ -155,24 +156,28 @@
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    transition: background 300ms ease-in-out;
   }
   
   .glass-light {
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    transition: background 300ms ease-in-out;
   }
   
   .glass-medium {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    transition: background 300ms ease-in-out;
   }
   
   .glass-strong {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    transition: background 300ms ease-in-out;
   }
 
   /* Dark mode glass variants */

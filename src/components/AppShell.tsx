@@ -34,7 +34,9 @@ export function AppShell() {
     toggleNotificationDrawer, 
     notificationsData,
     markNotificationAsRead,
-    markAllNotificationsAsRead
+    markAllNotificationsAsRead,
+    themeMode,
+    preferences
   } = useAppStore()
 
   useEffect(() => {
@@ -44,6 +46,22 @@ export function AppShell() {
 
     return () => clearInterval(timer)
   }, [])
+
+  useEffect(() => {
+    if (themeMode === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [themeMode])
+
+  useEffect(() => {
+    if (preferences.reducedMotion) {
+      document.documentElement.style.setProperty('--animation-duration', '0ms')
+    } else {
+      document.documentElement.style.removeProperty('--animation-duration')
+    }
+  }, [preferences.reducedMotion])
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', {
