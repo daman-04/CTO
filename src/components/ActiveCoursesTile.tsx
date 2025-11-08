@@ -20,12 +20,11 @@ export function ActiveCoursesTile({ data, index = 0 }: ActiveCoursesTileProps) {
   return (
     <motion.div
       variants={tahoeVariants.slideUp}
-      transition={tahoeTransitions.slideUp}
-      custom={index}
-      whileHover={{ y: -4 }}
-      className="hover:shadow-lg transition-shadow duration-200"
+      transition={{ ...tahoeTransitions.slideUp, delay: index * 0.1 }}
+      whileHover={{ y: -4, transition: tahoeTransitions.hover }}
+      className=""
     >
-      <GlassPanel className="p-6 cursor-default group hover:bg-gray-300/20 transition-colors duration-200">
+      <GlassPanel className="p-6 cursor-default group">
         <div className="flex items-start justify-between mb-4">
           <div>
             <Typography variant="overline" weight="medium" color="secondary">

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useAppStore } from '../state/appStore'
 import { GlassPanel, GlassButton, Typography } from './index'
+import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 export function FacultyFilters() {
   const { 
@@ -34,9 +35,10 @@ export function FacultyFilters() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
+      initial="initial"
+      animate="animate"
+      variants={tahoeVariants.slideLeft}
+      transition={tahoeTransitions.slideLeft}
       className="space-y-4"
     >
       {/* Search Input */}
@@ -47,12 +49,12 @@ export function FacultyFilters() {
             placeholder="Search faculty by name, department, email, or courses..."
             value={facultyFilter.searchQuery}
             onChange={(e) => setFacultySearchQuery(e.target.value)}
-            className="w-full px-4 py-3 bg-gray-100/30 backdrop-blur-sm border border-gray-200/30 rounded-tahoe text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 bg-gray-100/30 backdrop-blur-sm border border-gray-200/30 rounded-tahoe text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent focus-tahoe"
           />
           {facultyFilter.searchQuery && (
             <button
               onClick={() => setFacultySearchQuery('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             >
               ×
             </button>

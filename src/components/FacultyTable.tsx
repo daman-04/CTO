@@ -44,20 +44,20 @@ export function FacultyTable({ faculty, onAddGrade, onSendNotice }: FacultyTable
           {faculty.map((facultyMember, index) => (
             <motion.div
               key={facultyMember.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={tahoeVariants.slideLeft}
               transition={{ 
-                duration: 0.3, 
-                delay: index * 0.05,
-                layout: { duration: 0.2 }
+                ...tahoeTransitions.slideLeft,
+                delay: index * 0.05
               }}
               layout
               whileHover={{ 
-                backgroundColor: 'rgba(59, 130, 246, 0.05)',
-                transition: { duration: 0.2 } 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                transition: tahoeTransitions.hover
               }}
-              className="px-6 py-4 hover:bg-blue-50/30 transition-colors cursor-pointer"
+              className="px-6 py-4 cursor-pointer"
             >
               <div className="grid grid-cols-12 gap-4 items-center">
                 {/* Name */}
@@ -127,18 +127,22 @@ export function FacultyTable({ faculty, onAddGrade, onSendNotice }: FacultyTable
                 <div className="col-span-1">
                   <div className="flex gap-2">
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      variants={tahoeVariants.buttonPress}
+                      whileHover="hover"
+                      whileTap="tap"
+                      whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                       onClick={() => onAddGrade(facultyMember.id)}
-                      className="px-3 py-1 text-xs font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      className="px-3 py-1 text-xs font-medium bg-blue-500 text-white rounded-lg"
                     >
                       Grade
                     </motion.button>
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      variants={tahoeVariants.buttonPress}
+                      whileHover="hover"
+                      whileTap="tap"
+                      whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                       onClick={() => onSendNotice(facultyMember.id)}
-                      className="px-3 py-1 text-xs font-medium bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                      className="px-3 py-1 text-xs font-medium bg-purple-500 text-white rounded-lg"
                     >
                       Notice
                     </motion.button>

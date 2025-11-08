@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion, MotionProps } from 'framer-motion'
 import classNames from 'classnames'
-import { tahoeVariants } from '../lib/motion'
+import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 interface GlassButtonProps extends MotionProps {
   children: React.ReactNode
@@ -21,7 +21,7 @@ export function GlassButton({
   className,
   ...motionProps
 }: GlassButtonProps) {
-  const baseClasses = 'font-medium transition-all duration-200 focus:outline-none focus:ring-2'
+  const baseClasses = 'font-medium focus:outline-none focus:ring-2'
   
   const sizeClasses = {
     sm: 'px-4 py-2 text-sm',
@@ -31,17 +31,16 @@ export function GlassButton({
   
   const variantClasses = {
     primary: classNames(
-      'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500/50',
-      'shadow-lg shadow-blue-500/20'
+      'bg-blue-600 text-white focus:ring-blue-500/50'
     ),
     secondary: classNames(
-      'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400/50'
+      'bg-gray-200 text-gray-800 focus:ring-gray-400/50'
     ),
     ghost: classNames(
-      'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-400/50'
+      'bg-transparent text-gray-700 focus:ring-gray-400/50'
     ),
     glass: classNames(
-      'glass-medium text-gray-800 hover:glass-strong focus:ring-blue-400/50',
+      'glass-medium text-gray-800 focus:ring-blue-400/50',
       'border border-gray-200/50'
     ),
   }
@@ -63,6 +62,7 @@ export function GlassButton({
       initial="rest"
       whileHover="hover"
       whileTap="tap"
+      whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       className={buttonClasses}

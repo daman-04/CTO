@@ -25,8 +25,6 @@ export function GlassPanel({
     'glass-' + variant,
     {
       'border border-gray-200/50': border,
-      'shadow-sm': elevation === 'surface',
-      'shadow-md': elevation === 'overlay',
     },
     {
       'rounded-tahoe-sm': rounded === 'sm',
