@@ -54,6 +54,17 @@ export interface CourseData {
   days: string[]
 }
 
+export interface FacultyData {
+  id: string
+  name: string
+  department: string
+  currentCourses: string[]
+  email: string
+  phone: string
+  office: string
+  status: 'active' | 'on_leave' | 'emeritus'
+}
+
 export interface DashboardState {
   gpaData: GPAData
   attendanceData: AttendanceData
@@ -68,6 +79,14 @@ interface CoursesFilterState {
   sortOrder: 'asc' | 'desc'
 }
 
+interface FacultyFilterState {
+  searchQuery: string
+  selectedDepartment: 'all' | string
+  selectedStatus: 'all' | 'active' | 'on_leave' | 'emeritus'
+  sortBy: 'name' | 'department' | 'courses'
+  sortOrder: 'asc' | 'desc'
+}
+
 interface AppState {
   selectedPage: NavigationPage
   themeMode: ThemeMode
@@ -76,6 +95,8 @@ interface AppState {
   dashboardData: DashboardState
   coursesData: CourseData[]
   coursesFilter: CoursesFilterState
+  facultyData: FacultyData[]
+  facultyFilter: FacultyFilterState
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -84,6 +105,10 @@ interface AppState {
   setCoursesSearchQuery: (query: string) => void
   setCoursesStatusFilter: (status: CoursesFilterState['selectedStatus']) => void
   setCoursesSort: (sortBy: CoursesFilterState['sortBy'], sortOrder?: CoursesFilterState['sortOrder']) => void
+  setFacultySearchQuery: (query: string) => void
+  setFacultyDepartmentFilter: (department: FacultyFilterState['selectedDepartment']) => void
+  setFacultyStatusFilter: (status: FacultyFilterState['selectedStatus']) => void
+  setFacultySort: (sortBy: FacultyFilterState['sortBy'], sortOrder?: FacultyFilterState['sortOrder']) => void
 }
 
 const mockDashboardData: DashboardState = {
@@ -229,6 +254,109 @@ const mockCoursesData: CourseData[] = [
   },
 ]
 
+const mockFacultyData: FacultyData[] = [
+  {
+    id: '1',
+    name: 'Dr. Sarah Johnson',
+    department: 'Computer Science',
+    currentCourses: ['CS401', 'CS420'],
+    email: 'sarah.johnson@university.edu',
+    phone: '(555) 123-4567',
+    office: 'Tech Hall 301',
+    status: 'active',
+  },
+  {
+    id: '2',
+    name: 'Prof. Michael Chen',
+    department: 'Computer Science',
+    currentCourses: ['CS350', 'CS310'],
+    email: 'michael.chen@university.edu',
+    phone: '(555) 234-5678',
+    office: 'Science Building 205',
+    status: 'active',
+  },
+  {
+    id: '3',
+    name: 'Dr. Emily Rodriguez',
+    department: 'Computer Science',
+    currentCourses: ['CS420', 'CS460'],
+    email: 'emily.rodriguez@university.edu',
+    phone: '(555) 345-6789',
+    office: 'Tech Hall 402',
+    status: 'active',
+  },
+  {
+    id: '4',
+    name: 'Prof. David Kim',
+    department: 'Engineering',
+    currentCourses: ['CS380'],
+    email: 'david.kim@university.edu',
+    phone: '(555) 456-7890',
+    office: 'Engineering Lab 150',
+    status: 'active',
+  },
+  {
+    id: '5',
+    name: 'Dr. Lisa Wang',
+    department: 'Computer Science',
+    currentCourses: ['CS390', 'CS220'],
+    email: 'lisa.wang@university.edu',
+    phone: '(555) 567-8901',
+    office: 'Tech Hall 201',
+    status: 'active',
+  },
+  {
+    id: '6',
+    name: 'Prof. James Miller',
+    department: 'Mathematics',
+    currentCourses: ['CS310'],
+    email: 'james.miller@university.edu',
+    phone: '(555) 678-9012',
+    office: 'Science Building 308',
+    status: 'on_leave',
+  },
+  {
+    id: '7',
+    name: 'Dr. Robert Taylor',
+    department: 'Computer Science',
+    currentCourses: ['CS460'],
+    email: 'robert.taylor@university.edu',
+    phone: '(555) 789-0123',
+    office: 'Tech Hall 501',
+    status: 'active',
+  },
+  {
+    id: '8',
+    name: 'Prof. Jennifer Lee',
+    department: 'Mathematics',
+    currentCourses: ['CS220'],
+    email: 'jennifer.lee@university.edu',
+    phone: '(555) 890-1234',
+    office: 'Science Building 102',
+    status: 'emeritus',
+  },
+  {
+    id: '9',
+    name: 'Dr. Marcus Williams',
+    department: 'Physics',
+    currentCourses: [],
+    email: 'marcus.williams@university.edu',
+    phone: '(555) 901-2345',
+    office: 'Physics Building 201',
+    status: 'active',
+  },
+  {
+    id: '10',
+    name: 'Dr. Amanda Foster',
+    department: 'Engineering',
+    currentCourses: ['CS380'],
+    email: 'amanda.foster@university.edu',
+    phone: '(555) 012-3456',
+    office: 'Engineering Lab 250',
+    status: 'active',
+  },
+]
+
 export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
@@ -240,6 +368,14 @@ export const useAppStore = create<AppState>((set) => ({
     searchQuery: '',
     selectedStatus: 'all',
     sortBy: 'code',
+    sortOrder: 'asc',
+  },
+  facultyData: mockFacultyData,
+  facultyFilter: {
+    searchQuery: '',
+    selectedDepartment: 'all',
+    selectedStatus: 'all',
+    sortBy: 'name',
     sortOrder: 'asc',
   },
   setSelectedPage: (page) => set({ selectedPage: page }),
@@ -261,5 +397,17 @@ export const useAppStore = create<AppState>((set) => ({
   })),
   setCoursesSort: (sortBy, sortOrder) => set((state) => ({
     coursesFilter: { ...state.coursesFilter, sortBy, sortOrder: sortOrder || state.coursesFilter.sortOrder }
+  })),
+  setFacultySearchQuery: (query) => set((state) => ({
+    facultyFilter: { ...state.facultyFilter, searchQuery: query }
+  })),
+  setFacultyDepartmentFilter: (department) => set((state) => ({
+    facultyFilter: { ...state.facultyFilter, selectedDepartment: department }
+  })),
+  setFacultyStatusFilter: (status) => set((state) => ({
+    facultyFilter: { ...state.facultyFilter, selectedStatus: status }
+  })),
+  setFacultySort: (sortBy, sortOrder) => set((state) => ({
+    facultyFilter: { ...state.facultyFilter, sortBy, sortOrder: sortOrder || state.facultyFilter.sortOrder }
   })),
 }))
