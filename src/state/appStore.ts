@@ -41,6 +41,40 @@ export interface AnnouncementData {
   type: 'academic' | 'administrative' | 'event'
 }
 
+export interface DepartmentMetric {
+  name: string
+  facultyCount: number
+  activeCoursesCount: number
+}
+
+export interface ExamStat {
+  subject: string
+  averageScore: number
+  completionRate: number
+}
+
+export interface AttendanceTrend {
+  month: string
+  percentage: number
+}
+
+export interface AdminAnalyticsData {
+  departments: DepartmentMetric[]
+  totalDepartments: number
+  totalFaculty: number
+  examStats: {
+    upcomingExams: number
+    averageScore: number
+    completionRate: number
+    subjects: ExamStat[]
+  }
+  attendanceTrends: {
+    overall: number
+    trend: 'up' | 'down' | 'stable'
+    monthlyData: AttendanceTrend[]
+  }
+}
+
 export interface CourseData {
   id: string
   code: string
@@ -155,6 +189,7 @@ interface AppState {
   facultyFilter: FacultyFilterState
   libraryData: LibraryLogEntry[]
   libraryFilter: LibraryFilterState
+  adminAnalyticsData: AdminAnalyticsData
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -702,7 +737,43 @@ const mockStudentsData: StudentData[] = [
   },
   ]
 
-export const useAppStore = create<AppState>((set) => ({
+  const mockAdminAnalyticsData: AdminAnalyticsData = {
+  departments: [
+   { name: 'Computer Science', facultyCount: 12, activeCoursesCount: 18 },
+   { name: 'Engineering', facultyCount: 8, activeCoursesCount: 14 },
+   { name: 'Mathematics', facultyCount: 7, activeCoursesCount: 12 },
+   { name: 'Physics', facultyCount: 5, activeCoursesCount: 8 },
+   { name: 'Data Science', facultyCount: 6, activeCoursesCount: 10 },
+  ],
+  totalDepartments: 5,
+  totalFaculty: 38,
+  examStats: {
+   upcomingExams: 12,
+   averageScore: 78.5,
+   completionRate: 92,
+   subjects: [
+     { subject: 'Algorithms', averageScore: 82, completionRate: 95 },
+     { subject: 'Databases', averageScore: 78, completionRate: 91 },
+     { subject: 'Machine Learning', averageScore: 75, completionRate: 89 },
+     { subject: 'Web Dev', averageScore: 84, completionRate: 96 },
+     { subject: 'Networks', averageScore: 76, completionRate: 90 },
+   ],
+  },
+  attendanceTrends: {
+   overall: 89,
+   trend: 'up',
+   monthlyData: [
+     { month: 'Jan', percentage: 85 },
+     { month: 'Feb', percentage: 87 },
+     { month: 'Mar', percentage: 88 },
+     { month: 'Apr', percentage: 89 },
+     { month: 'May', percentage: 90 },
+     { month: 'Jun', percentage: 89 },
+   ],
+  },
+  }
+
+  export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
   isNotificationDrawerOpen: false,
@@ -732,6 +803,7 @@ export const useAppStore = create<AppState>((set) => ({
     sortBy: 'date',
     sortOrder: 'desc',
   },
+  adminAnalyticsData: mockAdminAnalyticsData,
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
   toggleNotificationDrawer: () => set((state) => ({ 

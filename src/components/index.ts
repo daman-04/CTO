@@ -26,5 +26,10 @@ export { LibraryLogEntry } from './LibraryLogEntry'
 export { LibrarySummaryBadges } from './LibrarySummaryBadges'
 export { LibraryActionModal } from './LibraryActionModal'
 
+// Admin Module
+export { DepartmentsCard } from './DepartmentsCard'
+export { ExamStatsCard } from './ExamStatsCard'
+export { AttendanceTrendsCard } from './AttendanceTrendsCard'
+
 // Legacy example component (to be removed)
 export { Button } from './Button.example'
