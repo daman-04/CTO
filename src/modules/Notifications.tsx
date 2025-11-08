@@ -1,4 +1,3 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import { GlassPanel, Typography } from '../components'
 import { tahoeVariants, tahoeTransitions } from '../lib/motion'

@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { LibraryLogEntry as LibraryLogEntryType } from '../state/appStore'
 import { GlassPanel, GlassButton, Typography } from './index'
-import { tahoeVariants } from '../lib/motion'
 
 interface LibraryActionModalProps {
   isOpen: boolean
@@ -20,7 +19,6 @@ export function LibraryActionModal({
   onConfirm,
 }: LibraryActionModalProps) {
   const [studentName, setStudentName] = useState('')
-  const [selectedItem, setSelectedItem] = useState<string>('')
 
   const handleConfirm = () => {
     if (action === 'issue' && !studentName.trim()) {
@@ -28,12 +26,10 @@ export function LibraryActionModal({
     }
     onConfirm(action || 'issue', entry)
     setStudentName('')
-    setSelectedItem('')
   }
 
   const handleClose = () => {
     setStudentName('')
-    setSelectedItem('')
     onClose()
   }
 

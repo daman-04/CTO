@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
@@ -27,7 +27,6 @@ const navigationItems: NavItem[] = [
 
 export function AppShell() {
   const location = useLocation()
-  const navigate = useNavigate()
   const [currentTime, setCurrentTime] = useState(new Date())
   const { 
     isNotificationDrawerOpen, 
@@ -71,10 +70,6 @@ export function AppShell() {
     })
   }
 
-  const handleNavClick = (path: string) => {
-    navigate(path)
-  }
-
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
@@ -108,10 +103,6 @@ export function AppShell() {
                 <Link
                   key={item.id}
                   to={item.path}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleNavClick(item.path)
-                  }}
                 >
                   <motion.div
                     variants={tahoeVariants.buttonPress}
@@ -120,10 +111,10 @@ export function AppShell() {
                     whileTap="tap"
                     whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
                     className={classNames(
-                      'flex items-center gap-3 px-4 py-3 rounded-tahoe-sm',
+                      'flex items-center gap-3 px-4 py-3 rounded-tahoe-sm cursor-pointer transition-all duration-300 relative overflow-hidden',
                       isActive
-                        ? 'glass-strong text-blue-600'
-                        : 'text-gray-700'
+                        ? 'glass-strong text-blue-600 liquid-glow'
+                        : 'text-gray-700 hover:bg-white/20'
                     )}
                   >
                     <span className="text-xl">{item.icon}</span>

@@ -38,7 +38,7 @@ export function LibraryLogEntry({ entry, index, onAction }: LibraryLogEntryProps
     >
       <GlassPanel
         variant="light"
-        className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:bg-white/60 ${statusBgColor[entry.status]}`}
+        className={`p-4 cursor-pointer transition-all duration-300 liquid-hover ${statusBgColor[entry.status]}`}
       >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1 min-w-0">
@@ -100,9 +100,16 @@ export function LibraryLogEntry({ entry, index, onAction }: LibraryLogEntryProps
                   {entry.returnedDate
                     ? new Date(entry.returnedDate).toLocaleDateString()
                     : new Date(entry.dueDate).toLocaleDateString()}
-                  {!entry.returnedDate && daysUntilDue <= 7 && (
+                  {!entry.returnedDate && (
                     <span className="ml-2 text-xs font-medium">
-                      ({daysUntilDue} days left)
+                      {daysUntilDue < 0 
+                        ? `(${Math.abs(daysUntilDue)} days overdue)`
+                        : daysUntilDue === 0
+                        ? '(Due today)'
+                        : daysUntilDue <= 7
+                        ? `(${daysUntilDue} days left)`
+                        : ''
+                      }
                     </span>
                   )}
                 </Typography>

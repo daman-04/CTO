@@ -47,7 +47,7 @@ export function LibrarySummaryBadges({
       variants={tahoeVariants.staggerContainer}
       className="grid grid-cols-1 md:grid-cols-3 gap-4"
     >
-      {badges.map((badge, index) => (
+      {badges.map((badge) => (
         <motion.div
           key={badge.label}
           variants={tahoeVariants.staggerItem}

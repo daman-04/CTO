@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FacultyData } from '../state/appStore'
 import { GlassPanel, Typography } from './index'
 import classNames from 'classnames'
+import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 interface FacultyTableProps {
   faculty: FacultyData[]
