@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import classNames from 'classnames'
 import { useAppStore } from '../state/appStore'
 import { GlassPanel } from './GlassPanel'
 import { Typography } from './Typography'
 import { NotificationDrawer } from './NotificationDrawer'
-import { tahoeVariants, tahoeTransitions } from '../lib/motion'
+import { tahoeTransitions } from '../lib/motion'
 
 interface NavItem {
   id: string

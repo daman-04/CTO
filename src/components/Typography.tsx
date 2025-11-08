@@ -1,7 +1,5 @@
-import React from 'react'
 import { motion, MotionProps } from 'framer-motion'
 import classNames from 'classnames'
-import { tahoeVariants } from '../lib/motion'
 
 interface TypographyProps extends MotionProps {
   children: React.ReactNode

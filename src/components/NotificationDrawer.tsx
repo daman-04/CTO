@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { GlassPanel } from './GlassPanel'
 import { Typography } from './Typography'
-import { tahoeVariants, tahoeTransitions, TAHOE_MOTION } from '../lib/motion'
+import { tahoeTransitions, TAHOE_MOTION } from '../lib/motion'
 import { NotificationData } from '../state/appStore'
 
 interface NotificationDrawerProps {
