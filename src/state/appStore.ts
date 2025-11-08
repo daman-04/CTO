@@ -65,6 +65,31 @@ export interface FacultyData {
   status: 'active' | 'on_leave' | 'emeritus'
 }
 
+export interface StudentData {
+  id: string
+  name: string
+  initials: string
+  major: string
+  year: string
+  standing: string
+  studentId: string
+  advisor: string
+  email: string
+  phone: string
+  location: string
+  expectedGraduation: string
+  gpa: number
+  attendance: number
+  creditsCompleted: number
+  creditsInProgress: number
+  creditsRequired: number
+  currentCourses: string[]
+  focusArea: string
+  extracurriculars: string[]
+  avatarGradient: string
+  lastLogin: string
+}
+
 export interface DashboardState {
   gpaData: GPAData
   attendanceData: AttendanceData
@@ -96,6 +121,7 @@ interface AppState {
   coursesData: CourseData[]
   coursesFilter: CoursesFilterState
   facultyData: FacultyData[]
+  studentsData: StudentData[]
   facultyFilter: FacultyFilterState
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
@@ -357,6 +383,153 @@ const mockFacultyData: FacultyData[] = [
   },
 ]
 
+const mockStudentsData: StudentData[] = [
+  {
+    id: 'sarah-lee',
+    name: 'Sarah Lee',
+    initials: 'SL',
+    major: 'Computer Science',
+    year: 'Senior',
+    standing: 'Honors Track',
+    studentId: 'U-104582',
+    advisor: 'Dr. Michael Chen',
+    email: 'sarah.lee@university.edu',
+    phone: '(555) 210-3345',
+    location: 'Tech Hall 312',
+    expectedGraduation: 'May 2025',
+    gpa: 3.92,
+    attendance: 96,
+    creditsCompleted: 108,
+    creditsInProgress: 12,
+    creditsRequired: 120,
+    currentCourses: ['Capstone Studio', 'Machine Learning Lab', 'Ethics in AI'],
+    focusArea: 'Machine Learning & Ethics',
+    extracurriculars: ['ACM President', 'Robotics Lab'],
+    avatarGradient: 'from-blue-200/90 via-blue-300/80 to-blue-500/70',
+    lastLogin: '12 minutes ago',
+  },
+  {
+    id: 'mateo-alvarez',
+    name: 'Mateo Alvarez',
+    initials: 'MA',
+    major: 'Data Science',
+    year: 'Junior',
+    standing: "Dean's List",
+    studentId: 'U-109276',
+    advisor: 'Prof. Emily Rodriguez',
+    email: 'mateo.alvarez@university.edu',
+    phone: '(555) 278-4610',
+    location: 'Innovation Hub 220',
+    expectedGraduation: 'May 2026',
+    gpa: 3.68,
+    attendance: 92,
+    creditsCompleted: 84,
+    creditsInProgress: 15,
+    creditsRequired: 120,
+    currentCourses: ['Statistical Learning', 'Data Visualization Studio', 'Cloud Computing'],
+    focusArea: 'Applied Analytics',
+    extracurriculars: ['Data Science Society', 'Hackathon Team'],
+    avatarGradient: 'from-purple-200/90 via-purple-300/80 to-indigo-500/70',
+    lastLogin: '28 minutes ago',
+  },
+  {
+    id: 'priya-desai',
+    name: 'Priya Desai',
+    initials: 'PD',
+    major: 'Mechanical Engineering',
+    year: 'Sophomore',
+    standing: 'On Track',
+    studentId: 'U-102845',
+    advisor: 'Dr. Marcus Williams',
+    email: 'priya.desai@university.edu',
+    phone: '(555) 312-8476',
+    location: 'Engineering Lab 210',
+    expectedGraduation: 'December 2026',
+    gpa: 3.45,
+    attendance: 88,
+    creditsCompleted: 60,
+    creditsInProgress: 15,
+    creditsRequired: 128,
+    currentCourses: ['Thermodynamics II', 'Materials Science', 'Design for Manufacturing'],
+    focusArea: 'Sustainable Systems',
+    extracurriculars: ['Society of Women Engineers', 'Formula SAE'],
+    avatarGradient: 'from-orange-200/90 via-amber-300/80 to-rose-400/70',
+    lastLogin: '1 hour ago',
+  },
+  {
+    id: 'ava-thompson',
+    name: 'Ava Thompson',
+    initials: 'AT',
+    major: 'Interaction Design',
+    year: 'Senior',
+    standing: 'Portfolio Review',
+    studentId: 'U-107593',
+    advisor: 'Prof. Jennifer Lee',
+    email: 'ava.thompson@university.edu',
+    phone: '(555) 843-2290',
+    location: 'Design Studio 104',
+    expectedGraduation: 'May 2025',
+    gpa: 3.81,
+    attendance: 94,
+    creditsCompleted: 110,
+    creditsInProgress: 8,
+    creditsRequired: 120,
+    currentCourses: ['Service Design Lab', 'Inclusive Design Seminar', 'Motion Systems'],
+    focusArea: 'Human-Centered Systems',
+    extracurriculars: ['Design Guild Lead', 'Campus UX Lab'],
+    avatarGradient: 'from-teal-200/90 via-emerald-300/80 to-cyan-400/70',
+    lastLogin: '9 minutes ago',
+  },
+  {
+    id: 'noah-anderson',
+    name: 'Noah Anderson',
+    initials: 'NA',
+    major: 'Electrical Engineering',
+    year: 'Junior',
+    standing: 'Research Fellow',
+    studentId: 'U-106412',
+    advisor: 'Dr. Amanda Foster',
+    email: 'noah.anderson@university.edu',
+    phone: '(555) 498-7712',
+    location: 'Photonics Lab 3B',
+    expectedGraduation: 'December 2025',
+    gpa: 3.56,
+    attendance: 91,
+    creditsCompleted: 86,
+    creditsInProgress: 12,
+    creditsRequired: 128,
+    currentCourses: ['Embedded Systems', 'Advanced Circuits', 'Renewable Energy Systems'],
+    focusArea: 'Photonics & Power Systems',
+    extracurriculars: ['IEEE Treasurer', 'Solar Car Team'],
+    avatarGradient: 'from-slate-200/90 via-slate-300/80 to-blue-400/70',
+    lastLogin: '42 minutes ago',
+  },
+  {
+    id: 'hana-sato',
+    name: 'Hana Sato',
+    initials: 'HS',
+    major: 'Cybersecurity',
+    year: 'Graduate Year 1',
+    standing: 'Accelerated Track',
+    studentId: 'G-205184',
+    advisor: 'Dr. Robert Taylor',
+    email: 'hana.sato@university.edu',
+    phone: '(555) 634-1189',
+    location: 'Cyber Range 210',
+    expectedGraduation: 'August 2025',
+    gpa: 3.88,
+    attendance: 97,
+    creditsCompleted: 32,
+    creditsInProgress: 9,
+    creditsRequired: 48,
+    currentCourses: ['Advanced Network Defense', 'Applied Cryptography', 'Incident Response Studio'],
+    focusArea: 'Network Defense & Automation',
+    extracurriculars: ['Cyber Defense Club', 'Capture the Flag Team'],
+    avatarGradient: 'from-pink-200/90 via-fuchsia-300/80 to-purple-500/70',
+    lastLogin: '5 minutes ago',
+  },
+]
+
 export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
   themeMode: 'light',
@@ -371,6 +544,7 @@ export const useAppStore = create<AppState>((set) => ({
     sortOrder: 'asc',
   },
   facultyData: mockFacultyData,
+  studentsData: mockStudentsData,
   facultyFilter: {
     searchQuery: '',
     selectedDepartment: 'all',
