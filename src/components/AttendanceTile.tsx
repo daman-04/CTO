@@ -6,9 +6,11 @@ import { AttendanceData } from '../state/appStore'
 interface AttendanceTileProps {
   data: AttendanceData
   index?: number
+  elevation?: '1' | '2' | '3'
+  interactive?: boolean
 }
 
-export function AttendanceTile({ data, index = 0 }: AttendanceTileProps) {
+export function AttendanceTile({ data, index = 0, elevation = '2', interactive = false }: AttendanceTileProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'excellent':
@@ -39,14 +41,12 @@ export function AttendanceTile({ data, index = 0 }: AttendanceTileProps) {
   }
 
   return (
-    <motion.div
-      variants={tahoeVariants.slideUp}
-      transition={tahoeTransitions.slideUp}
-      custom={index}
-      whileHover={{ y: -4 }}
-      className="hover:shadow-lg transition-shadow duration-200"
-    >
-      <GlassPanel className="p-6 cursor-default group hover:bg-gray-300/20 transition-colors duration-200">
+    <motion.div variants={tahoeVariants.tileStagger}>
+      <GlassPanel 
+        elevation={elevation} 
+        interactive={interactive}
+        className="p-6 cursor-default group"
+      >
         <div className="flex items-start justify-between mb-4">
           <div>
             <Typography variant="overline" weight="medium" color="secondary">
@@ -56,7 +56,7 @@ export function AttendanceTile({ data, index = 0 }: AttendanceTileProps) {
               {data.percentage}%
             </Typography>
           </div>
-          <IconBadge variant={getStatusVariant(data.status)} size="lg">
+          <IconBadge variant={getStatusVariant(data.status)} size="lg" pulseOnMount>
             {getStatusIcon(data.status)}
           </IconBadge>
         </div>

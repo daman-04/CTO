@@ -1,13 +1,14 @@
 import React from 'react'
 import { motion, MotionProps } from 'framer-motion'
 import classNames from 'classnames'
-import { tahoeVariants } from '../lib/motion'
+import { tahoeVariants, tahoeMotion } from '../lib/motion'
 
 interface IconBadgeProps extends MotionProps {
   children: React.ReactNode
   variant?: 'default' | 'accent' | 'success' | 'warning' | 'error'
   size?: 'sm' | 'md' | 'lg'
   className?: string
+  pulseOnMount?: boolean
 }
 
 export function IconBadge({
@@ -15,6 +16,7 @@ export function IconBadge({
   variant = 'default',
   size = 'md',
   className,
+  pulseOnMount = false,
   ...motionProps
 }: IconBadgeProps) {
   const baseClasses = 'flex items-center justify-center rounded-full'
@@ -55,11 +57,17 @@ export function IconBadge({
     className
   )
 
+  const motionVariants = pulseOnMount 
+    ? tahoeVariants.fadeScaleIn 
+    : tahoeVariants.scaleIn
+
   return (
     <motion.div
-      variants={tahoeVariants.scaleIn}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      variants={motionVariants}
+      initial="initial"
+      animate="animate"
+      whileHover={{ scale: 1.05, transition: tahoeMotion.SPRING.GENTLE }}
+      whileTap={{ scale: 0.95, transition: tahoeMotion.SPRING.SNAPPY }}
       className={badgeClasses}
       {...motionProps}
     >

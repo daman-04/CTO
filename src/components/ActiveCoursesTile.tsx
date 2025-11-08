@@ -6,9 +6,11 @@ import { ActiveCoursesData } from '../state/appStore'
 interface ActiveCoursesTileProps {
   data: ActiveCoursesData
   index?: number
+  elevation?: '1' | '2' | '3'
+  interactive?: boolean
 }
 
-export function ActiveCoursesTile({ data, index = 0 }: ActiveCoursesTileProps) {
+export function ActiveCoursesTile({ data, index = 0, elevation = '2', interactive = false }: ActiveCoursesTileProps) {
   const avgProgress =
     data.courses.length > 0
       ? Math.round(
@@ -18,13 +20,12 @@ export function ActiveCoursesTile({ data, index = 0 }: ActiveCoursesTileProps) {
       : 0
 
   return (
-    <motion.div
-      variants={tahoeVariants.slideUp}
-      transition={{ ...tahoeTransitions.slideUp, delay: index * 0.1 }}
-      whileHover={{ y: -4, transition: tahoeTransitions.hover }}
-      className=""
-    >
-      <GlassPanel className="p-6 cursor-default group">
+    <motion.div variants={tahoeVariants.tileStagger}>
+      <GlassPanel 
+        elevation={elevation} 
+        interactive={interactive}
+        className="p-6 cursor-default group"
+      >
         <div className="flex items-start justify-between mb-4">
           <div>
             <Typography variant="overline" weight="medium" color="secondary">
@@ -34,7 +35,7 @@ export function ActiveCoursesTile({ data, index = 0 }: ActiveCoursesTileProps) {
               {data.count}
             </Typography>
           </div>
-          <IconBadge variant="accent" size="lg">
+          <IconBadge variant="accent" size="lg" pulseOnMount>
             📚
           </IconBadge>
         </div>

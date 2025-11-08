@@ -5,6 +5,8 @@ export { Typography } from './Typography'
 export { IconBadge } from './IconBadge'
 export { AppShell } from './AppShell'
 export { NotificationItem } from './NotificationItem'
+export { AmbientCursor } from './AmbientCursor'
+export { ThemeDemo } from './ThemeDemo'
 
 // Dashboard Tiles
 export { GPATile } from './GPATile'

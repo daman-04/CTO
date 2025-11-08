@@ -1,7 +1,8 @@
 import React from 'react'
 import { motion, MotionProps } from 'framer-motion'
 import classNames from 'classnames'
-import { tahoeVariants, tahoeTransitions } from '../lib/motion'
+import { tahoeVariants, tahoeTransitions, tahoeMotion } from '../lib/motion'
+import { useThemeStore } from '../state/theme'
 
 interface GlassButtonProps extends MotionProps {
   children: React.ReactNode
@@ -21,7 +22,11 @@ export function GlassButton({
   className,
   ...motionProps
 }: GlassButtonProps) {
-  const baseClasses = 'font-medium focus:outline-none focus:ring-2'
+  const { accent } = useThemeStore()
+  const baseClasses = classNames(
+    'font-medium focus:outline-none focus:ring-2',
+    `accent-${accent}`
+  )
   
   const sizeClasses = {
     sm: 'px-4 py-2 text-sm',
@@ -31,16 +36,16 @@ export function GlassButton({
   
   const variantClasses = {
     primary: classNames(
-      'bg-blue-600 text-white focus:ring-blue-500/50'
+      'bg-blue-600 text-white focus:ring-accent/50'
     ),
     secondary: classNames(
-      'bg-gray-200 text-gray-800 focus:ring-gray-400/50'
+      'bg-gray-200 text-gray-800 focus:ring-accent/30'
     ),
     ghost: classNames(
-      'bg-transparent text-gray-700 focus:ring-gray-400/50'
+      'bg-transparent text-gray-700 focus:ring-accent/20'
     ),
     glass: classNames(
-      'glass-medium text-gray-800 focus:ring-blue-400/50',
+      'glass-medium text-gray-800 focus:ring-accent/40',
       'border border-gray-200/50'
     ),
   }
@@ -58,11 +63,17 @@ export function GlassButton({
 
   return (
     <motion.button
-      variants={tahoeVariants.buttonPress}
+      variants={tahoeVariants.hoverLift}
       initial="rest"
       whileHover="hover"
-      whileTap="tap"
-      whileFocus={{ scale: 1.01, transition: tahoeTransitions.hover }}
+      whileTap={{ 
+        scale: 0.98, 
+        transition: tahoeMotion.SPRING.SNAPPY 
+      }}
+      whileFocus={{ 
+        scale: 1.01, 
+        transition: tahoeMotion.SPRING.GENTLE 
+      }}
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       className={buttonClasses}

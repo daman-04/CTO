@@ -1,19 +1,29 @@
 import { Variants, Transition } from 'framer-motion'
 
-// Tahoe motion timing constants (180-250ms spring easing)
-export const TAHOE_MOTION = {
+// Enhanced Tahoe motion system with global tokens
+export const tahoeMotion = {
+  // Duration tokens (ms)
   DURATION: {
     FAST: 180,
-    NORMAL: 215,
-    SLOW: 250,
+    BASE: 220,
+    SLOW: 260,
   },
+  // Spring physics tokens
   SPRING: {
-    GENTLE: { type: 'spring', stiffness: 200, damping: 25 },
-    SMOOTH: { type: 'spring', stiffness: 300, damping: 30 },
-    SNAPPY: { type: 'spring', stiffness: 400, damping: 35 },
-    BOUNCY: { type: 'spring', stiffness: 500, damping: 28 },
+    GENTLE: { type: 'spring', stiffness: 240, damping: 22 },
+    SMOOTH: { type: 'spring', stiffness: 300, damping: 25 },
+    SNAPPY: { type: 'spring', stiffness: 380, damping: 30 },
+  },
+  // Elevation hover tokens
+  HOVER: {
+    LIFT_SMALL: -2,
+    LIFT_MEDIUM: -4,
+    SCALE_SUBTLE: 1.01,
   },
 } as const
+
+// Legacy compatibility
+export const TAHOE_MOTION = tahoeMotion
 
 // Shared spring transitions (no bounce, frictionless springs)
 export const tahoeTransitions: Record<string, Transition> = {
@@ -139,6 +149,62 @@ export const tahoeVariants: Record<string, Variants> = {
     hover: { 
       y: -4,
       transition: tahoeTransitions.hover
+    },
+  },
+  
+  // Enhanced panel enter animation with backdrop blur
+  panelEnter: {
+    initial: { 
+      opacity: 0, 
+      backdropFilter: 'blur(0px)',
+      transform: 'translateY(8px) scale(0.98)'
+    },
+    animate: { 
+      opacity: 1, 
+      backdropFilter: 'blur(12px)',
+      transform: 'translateY(0) scale(1)',
+      transition: tahoeMotion.SPRING.SMOOTH
+    },
+    exit: { 
+      opacity: 0, 
+      backdropFilter: 'blur(0px)',
+      transform: 'translateY(-8px) scale(0.98)',
+      transition: tahoeMotion.SPRING.GENTLE
+    },
+  },
+  
+  // Tile stagger animation for dashboard
+  tileStagger: {
+    initial: { opacity: 0, y: 20, scale: 0.95 },
+    animate: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: tahoeMotion.SPRING.SMOOTH
+    },
+  },
+  
+  // Enhanced hover lift with micro-motion
+  hoverLift: {
+    rest: { 
+      y: 0,
+      scale: 1,
+      transition: tahoeMotion.SPRING.GENTLE
+    },
+    hover: { 
+      y: tahoeMotion.HOVER.LIFT_SMALL,
+      scale: tahoeMotion.HOVER.SCALE_SUBTLE,
+      transition: tahoeMotion.SPRING.SMOOTH
+    },
+  },
+  
+  // Fade and scale in for mount animations
+  fadeScaleIn: {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { 
+      opacity: 1, 
+      scale: 1,
+      transition: tahoeMotion.SPRING.GENTLE
     },
   },
 }
