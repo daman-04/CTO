@@ -90,6 +90,36 @@ export interface StudentData {
   lastLogin: string
 }
 
+export interface LibraryItem {
+  id: string
+  title: string
+  author: string
+  isbn: string
+  category: string
+  location: string
+}
+
+export interface LibraryLogEntry {
+  id: string
+  itemId: string
+  item: LibraryItem
+  studentId: string
+  studentName: string
+  type: 'issue' | 'return'
+  issuedDate: string
+  dueDate: string
+  returnedDate?: string
+  status: 'active' | 'overdue' | 'returned'
+}
+
+interface LibraryFilterState {
+  searchQuery: string
+  selectedType: 'all' | 'issue' | 'return'
+  selectedStatus: 'all' | 'active' | 'overdue' | 'returned'
+  sortBy: 'date' | 'dueDate' | 'studentName'
+  sortOrder: 'asc' | 'desc'
+}
+
 export interface DashboardState {
   gpaData: GPAData
   attendanceData: AttendanceData
@@ -123,6 +153,8 @@ interface AppState {
   facultyData: FacultyData[]
   studentsData: StudentData[]
   facultyFilter: FacultyFilterState
+  libraryData: LibraryLogEntry[]
+  libraryFilter: LibraryFilterState
   setSelectedPage: (page: NavigationPage) => void
   setThemeMode: (mode: ThemeMode) => void
   toggleNotificationDrawer: () => void
@@ -135,6 +167,12 @@ interface AppState {
   setFacultyDepartmentFilter: (department: FacultyFilterState['selectedDepartment']) => void
   setFacultyStatusFilter: (status: FacultyFilterState['selectedStatus']) => void
   setFacultySort: (sortBy: FacultyFilterState['sortBy'], sortOrder?: FacultyFilterState['sortOrder']) => void
+  setLibrarySearchQuery: (query: string) => void
+  setLibraryTypeFilter: (type: LibraryFilterState['selectedType']) => void
+  setLibraryStatusFilter: (status: LibraryFilterState['selectedStatus']) => void
+  setLibrarySort: (sortBy: LibraryFilterState['sortBy'], sortOrder?: LibraryFilterState['sortOrder']) => void
+  issueLibraryItem: (itemId: string, studentName: string) => void
+  returnLibraryItem: (logEntryId: string) => void
 }
 
 const mockDashboardData: DashboardState = {
@@ -528,7 +566,141 @@ const mockStudentsData: StudentData[] = [
     avatarGradient: 'from-pink-200/90 via-fuchsia-300/80 to-purple-500/70',
     lastLogin: '5 minutes ago',
   },
-]
+  ]
+
+  const mockLibraryItems: LibraryItem[] = [
+  {
+   id: 'lib-1',
+   title: 'Introduction to Algorithms',
+   author: 'Thomas H. Cormen',
+   isbn: '978-0262033848',
+   category: 'Computer Science',
+   location: 'Tech Section A1',
+  },
+  {
+   id: 'lib-2',
+   title: 'Design Patterns',
+   author: 'Gang of Four',
+   isbn: '978-0201633610',
+   category: 'Software Engineering',
+   location: 'Tech Section B2',
+  },
+  {
+   id: 'lib-3',
+   title: 'Clean Code',
+   author: 'Robert C. Martin',
+   isbn: '978-0132350884',
+   category: 'Software Development',
+   location: 'Tech Section C1',
+  },
+  {
+   id: 'lib-4',
+   title: 'Machine Learning Basics',
+   author: 'Andrew Ng',
+   isbn: '978-0262351447',
+   category: 'Artificial Intelligence',
+   location: 'Tech Section D3',
+  },
+  {
+   id: 'lib-5',
+   title: 'Database Systems',
+   author: 'C.J. Date',
+   isbn: '978-0321884497',
+   category: 'Databases',
+   location: 'Tech Section E2',
+  },
+  {
+   id: 'lib-6',
+   title: 'Web Development with React',
+   author: 'Mark Erikson',
+   isbn: '978-1491954622',
+   category: 'Web Development',
+   location: 'Tech Section F1',
+  },
+  ]
+
+  const mockLibraryData: LibraryLogEntry[] = [
+  {
+   id: 'log-1',
+   itemId: 'lib-1',
+   item: mockLibraryItems[0]!,
+   studentId: 'sarah-lee',
+   studentName: 'Sarah Lee',
+   type: 'issue',
+   issuedDate: '2025-01-08',
+   dueDate: '2025-02-08',
+   status: 'active',
+  },
+  {
+   id: 'log-2',
+   itemId: 'lib-2',
+   item: mockLibraryItems[1]!,
+   studentId: 'mateo-alvarez',
+   studentName: 'Mateo Alvarez',
+   type: 'issue',
+   issuedDate: '2025-01-05',
+   dueDate: '2025-02-05',
+   status: 'overdue',
+  },
+  {
+   id: 'log-3',
+   itemId: 'lib-3',
+   item: mockLibraryItems[2]!,
+   studentId: 'priya-desai',
+   studentName: 'Priya Desai',
+   type: 'return',
+   issuedDate: '2024-12-15',
+   dueDate: '2025-01-15',
+   returnedDate: '2025-01-10',
+   status: 'returned',
+  },
+  {
+   id: 'log-4',
+   itemId: 'lib-4',
+   item: mockLibraryItems[3]!,
+   studentId: 'ava-thompson',
+   studentName: 'Ava Thompson',
+   type: 'issue',
+   issuedDate: '2024-12-20',
+   dueDate: '2025-01-20',
+   status: 'overdue',
+  },
+  {
+   id: 'log-5',
+   itemId: 'lib-5',
+   item: mockLibraryItems[4]!,
+   studentId: 'noah-anderson',
+   studentName: 'Noah Anderson',
+   type: 'issue',
+   issuedDate: '2025-01-02',
+   dueDate: '2025-02-02',
+   status: 'active',
+  },
+  {
+   id: 'log-6',
+   itemId: 'lib-6',
+   item: mockLibraryItems[5]!,
+   studentId: 'hana-sato',
+   studentName: 'Hana Sato',
+   type: 'return',
+   issuedDate: '2024-12-01',
+   dueDate: '2025-01-01',
+   returnedDate: '2024-12-28',
+   status: 'returned',
+  },
+  {
+   id: 'log-7',
+   itemId: 'lib-1',
+   item: mockLibraryItems[0]!,
+   studentId: 'mateo-alvarez',
+   studentName: 'Mateo Alvarez',
+   type: 'return',
+   issuedDate: '2024-11-15',
+   dueDate: '2024-12-15',
+   returnedDate: '2024-12-10',
+   status: 'returned',
+  },
+  ]
 
 export const useAppStore = create<AppState>((set) => ({
   selectedPage: 'dashboard',
@@ -551,6 +723,14 @@ export const useAppStore = create<AppState>((set) => ({
     selectedStatus: 'all',
     sortBy: 'name',
     sortOrder: 'asc',
+  },
+  libraryData: mockLibraryData,
+  libraryFilter: {
+    searchQuery: '',
+    selectedType: 'all',
+    selectedStatus: 'all',
+    sortBy: 'date',
+    sortOrder: 'desc',
   },
   setSelectedPage: (page) => set({ selectedPage: page }),
   setThemeMode: (mode) => set({ themeMode: mode }),
@@ -583,5 +763,47 @@ export const useAppStore = create<AppState>((set) => ({
   })),
   setFacultySort: (sortBy, sortOrder) => set((state) => ({
     facultyFilter: { ...state.facultyFilter, sortBy, sortOrder: sortOrder || state.facultyFilter.sortOrder }
+  })),
+  setLibrarySearchQuery: (query) => set((state) => ({
+    libraryFilter: { ...state.libraryFilter, searchQuery: query }
+  })),
+  setLibraryTypeFilter: (type) => set((state) => ({
+    libraryFilter: { ...state.libraryFilter, selectedType: type }
+  })),
+  setLibraryStatusFilter: (status) => set((state) => ({
+    libraryFilter: { ...state.libraryFilter, selectedStatus: status }
+  })),
+  setLibrarySort: (sortBy, sortOrder) => set((state) => ({
+    libraryFilter: { ...state.libraryFilter, sortBy, sortOrder: sortOrder || state.libraryFilter.sortOrder }
+  })),
+  issueLibraryItem: (itemId, studentName) => set((state) => {
+    const item = mockLibraryItems.find(lib => lib.id === itemId)
+    if (!item) return state
+    
+    const today = new Date()
+    const dueDate = new Date(today.getTime() + 31 * 24 * 60 * 60 * 1000)
+    
+    const newEntry: LibraryLogEntry = {
+      id: `log-${Date.now()}`,
+      itemId,
+      item,
+      studentId: `student-${Date.now()}`,
+      studentName,
+      type: 'issue',
+      issuedDate: today.toISOString().split('T')[0],
+      dueDate: dueDate.toISOString().split('T')[0],
+      status: 'active',
+    }
+    
+    return {
+      libraryData: [newEntry, ...state.libraryData]
+    }
+  }),
+  returnLibraryItem: (logEntryId) => set((state) => ({
+    libraryData: state.libraryData.map(entry => 
+      entry.id === logEntryId 
+        ? { ...entry, status: 'returned', type: 'return', returnedDate: new Date().toISOString().split('T')[0] }
+        : entry
+    )
   })),
 }))

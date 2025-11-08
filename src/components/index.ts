@@ -20,5 +20,11 @@ export { FacultyTable } from './FacultyTable'
 export { FacultyFilters } from './FacultyFilters'
 export { FacultyFloatingActions } from './FacultyFloatingActions'
 
+// Library Module
+export { LibraryFilters } from './LibraryFilters'
+export { LibraryLogEntry } from './LibraryLogEntry'
+export { LibrarySummaryBadges } from './LibrarySummaryBadges'
+export { LibraryActionModal } from './LibraryActionModal'
+
 // Legacy example component (to be removed)
 export { Button } from './Button.example'
