@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { useAppStore } from '../state/appStore'
 import { GlassPanel } from './GlassPanel'
 import { Typography } from './Typography'
+import { NotificationDrawer } from './NotificationDrawer'
 import { tahoeVariants, tahoeTransitions } from '../lib/motion'
 
 interface NavItem {
@@ -29,7 +30,7 @@ export function AppShell() {
   const location = useLocation()
   const navigate = useNavigate()
   const [currentTime, setCurrentTime] = useState(new Date())
-  const { isNotificationDrawerOpen, toggleNotificationDrawer } = useAppStore()
+  const { isNotificationDrawerOpen, toggleNotificationDrawer, notificationsData } = useAppStore()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -189,46 +190,11 @@ export function AppShell() {
       </div>
 
       {/* Notification Drawer */}
-      <AnimatePresence>
-        {isNotificationDrawerOpen && (
-          <motion.aside
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 300, opacity: 0 }}
-            transition={tahoeTransitions.slideUp}
-            className="w-80 p-4 flex-shrink-0"
-          >
-            <GlassPanel
-              variant="medium"
-              className="h-full p-6"
-              elevation="overlay"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <Typography variant="h4">Notifications</Typography>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleNotificationDrawer}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  ✕
-                </motion.button>
-              </div>
-
-              <div className="space-y-3">
-                <div className="glass-subtle rounded-tahoe-sm p-4">
-                  <Typography variant="body" weight="medium" className="text-sm">
-                    Welcome!
-                  </Typography>
-                  <Typography variant="caption" color="secondary" className="mt-1">
-                    You have no new notifications
-                  </Typography>
-                </div>
-              </div>
-            </GlassPanel>
-          </motion.aside>
-        )}
-      </AnimatePresence>
+      <NotificationDrawer
+        isOpen={isNotificationDrawerOpen}
+        onClose={toggleNotificationDrawer}
+        notifications={notificationsData}
+      />
     </div>
   )
 }
