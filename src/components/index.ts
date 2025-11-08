@@ -11,5 +11,9 @@ export { AttendanceTile } from './AttendanceTile'
 export { ActiveCoursesTile } from './ActiveCoursesTile'
 export { AnnouncementsTile } from './AnnouncementsTile'
 
+// Courses Module
+export { CoursesToolbar } from './CoursesToolbar'
+export { CourseTile } from './CourseTile'
+
 // Legacy example component (to be removed)
 export { Button } from './Button.example'
